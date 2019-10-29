@@ -12,8 +12,16 @@ const routes: Routes = [
     loadChildren: () => import('./home/home.module').then(m => m.HomePageModule)
   },
   {
-    path: 'list',
-    loadChildren: () => import('./list/list.module').then(m => m.ListPageModule)
+    path: 'tournaments',
+    loadChildren: () => import('./tournament/tournament.module').then(m => m.TournamentPageModule)
+  },
+  {
+    path: 'events',
+    loadChildren: './event/event.module#EventPageModule'
+  },
+  {
+    path: 'event-details',
+    loadChildren: './event-details/event-details.module#EventDetailsPageModule'
   }
 ];
 

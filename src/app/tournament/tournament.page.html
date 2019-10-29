@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons left>
+        <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>{{pageTitle}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card *ngFor="let t of tournaments" (click)='openTournament(t.id)'>
+    <ion-item>
+      <h2>{{t.name}}</h2>
+    </ion-item>
+    <ion-card-content>
+      <p>{{t.startDate | date: 'dd/MM/yyyy' }}</p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
