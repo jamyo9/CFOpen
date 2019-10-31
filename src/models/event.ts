@@ -6,13 +6,13 @@ export class Event {
     code: string;
     name: string;
     startDate: Date;
-    menRxClassification: Score[];
+    description: string;
 
-    constructor(idTournament: string, code: string, name: string, startDate: Date, menRxClassification: Score[]) {
+    constructor(idTournament: string, code: string, name: string, startDate: Date, description: string) {
         this.idTournament = idTournament;
         this.code = code;
         this.name = name;
         this.startDate = startDate;
-        this.menRxClassification = menRxClassification;
+        this.description = description;
     }
 }

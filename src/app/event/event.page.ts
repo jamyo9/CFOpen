@@ -30,8 +30,7 @@ export class EventPage implements OnInit {
                 e.payload.doc.data().code,
                 e.payload.doc.data().name,
                 e.payload.doc.data().startDate.toDate(),
-                e.payload.doc.data().menRxClassification
-              );
+                e.payload.doc.data().description              );
               event.id = e.payload.doc.id;
               this.events.push(event);
             });
@@ -42,10 +41,7 @@ export class EventPage implements OnInit {
 
   ngOnInit() {
   }
-  // add back when alpha.4 is out
-  // navigate(item) {
-  //   this.router.navigate(['/tournament', JSON.stringify(item)]);
-  // }
+
   openEvent(id: string) {
     const navigationExtras: NavigationExtras = {
       state: {
@@ -54,5 +50,4 @@ export class EventPage implements OnInit {
     };
     this.router.navigate(['event-details'], navigationExtras);
   }
-
 }

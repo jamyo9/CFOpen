@@ -1,4 +1,5 @@
-import { Athlete } from "./athlete";
+import { Athlete } from './athlete';
+
 
 export class Classification {
     id: number;
@@ -6,8 +7,9 @@ export class Classification {
     startDate: Date;
     totalPoints: number;
     athlete: Athlete;
-    
-    constructor(eventCode: string, startDate: Date, totalPoints: number, athlete: Athlete) {
+    category: string;
+
+    constructor(eventCode: string, startDate: Date, totalPoints: number, athlete: Athlete, category: string) {
         this.eventCode = eventCode;
         this.startDate = startDate;
         this.totalPoints = totalPoints;

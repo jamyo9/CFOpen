@@ -1,31 +1,34 @@
-import { Athlete } from "./athlete";
-import { Judge } from "./judge";
+import { Judge } from './judge';
+import { Athlete } from './athlete';
+
 
 export class Score {
     id: number;
-    eventId: number;
+    eventId: string;
     athlete: Athlete;
     judge: Judge;
-    judgeCertified: boolean;
     date: Date;
-    imgUrl:string;
+    imgUrl: string;
     scaled: boolean;
     location: string;
     timeScored: string;
     score: number;
     position: number;
 
-    constructor(eventId: number) {
+    constructor(
+        eventId: string, athlete: Athlete, judge: Judge,
+        date: Date, imgUrl: string, scaled: boolean, location: string,
+        timeScored: string, score: number) {
         this.id = null;
         this.eventId = eventId;
-        this.athlete = null;
-        this.judge = null;
-        this.date = null;
-        this.imgUrl = "";
-        this.scaled = false;
-        this.location = "";
-        this.timeScored = "";
-        this.score = 0;
+        this.athlete = athlete;
+        this.judge = judge;
+        this.date = date;
+        this.imgUrl = imgUrl;
+        this.scaled = scaled;
+        this.location = location;
+        this.timeScored = timeScored;
+        this.score = score;
         this.position = 1;
     }
 }

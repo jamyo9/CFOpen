@@ -11,4 +11,31 @@
 
 <ion-content>
   <h2>{{ event.name }}</h2>
+  <p>
+    {{event.description}}
+  </p>
+
+  <ion-item>
+    <ion-label>Event</ion-label>
+    <ion-select name="periodSelected" (ionChange)="onChangeClassification($event)" >
+      <ion-select-option value="menRx" selected>RxMen</ion-select-option>
+      <ion-select-option value="womenRx">RxWomen</ion-select-option>
+      <ion-select-option value="menSc">ScMen</ion-select-option>
+      <ion-select-option value="womenSc">ScWomen</ion-select-option>
+      <ion-select-option value="55">50+</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button>
+        <ion-icon name="add" (click)="addScore(event.id)"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+
+  <ion-label>{{ categoryTitle }}</ion-label>
+  <ion-card *ngFor="let c of classification"><!-- (click)='open20Details(c.id)'>-->
+    <ion-item>
+      <h2>{{c.position}} - {{c.athlete.name}} {{c.athlete.lastName}} - {{c.timeScored}} / {{c.score}} Points</h2>
+    </ion-item>
+  </ion-card>
 </ion-content>

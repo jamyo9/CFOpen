@@ -22,7 +22,8 @@ const routes: Routes = [
   {
     path: 'event-details',
     loadChildren: './event-details/event-details.module#EventDetailsPageModule'
-  }
+  },
+  { path: 'edit-score', loadChildren: './edit-score/edit-score.module#EditScorePageModule' }
 ];
 
 @NgModule({

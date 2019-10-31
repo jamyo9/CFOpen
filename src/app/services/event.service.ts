@@ -1,4 +1,3 @@
-import { Event } from './../../models/event';
 import { FirebaseService } from './firebase.service';
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from '@angular/fire/firestore';
@@ -25,6 +24,17 @@ export class EventService {
   getEventDetails(idEvent: string) {
     return new Promise<any>((resolve, reject) => {
       this.firestore.collection('/events').doc(idEvent).snapshotChanges()
+      .subscribe(ret => {
+        resolve(ret);
+      });
+    });
+  }
+
+  getClassificationEvent(category: string, idEvent: string) {
+    return new Promise<any>((resolve, reject) => {
+      // TODO añadir idEvent y category a la query
+      // this.firestore.collection('/scores').doc(idEvent).snapshotChanges()
+      this.firestore.collection('/scores').snapshotChanges()
       .subscribe(ret => {
         resolve(ret);
       });
