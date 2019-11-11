@@ -1,9 +1,86 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>edit-score</ion-title>
+    <ion-buttons left>
+        <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>{{ pageTitle }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
 
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="arrow-dropup"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button (click)="deleteScore()"><ion-icon name="trash"></ion-icon></ion-fab-button>
+      <ion-fab-button (click)="cancelScore()"><ion-icon name="close"></ion-icon></ion-fab-button>
+      <ion-fab-button (click)="saveScore()"><ion-icon name="checkmark"></ion-icon></ion-fab-button>
+      <ion-fab-button (click)="presentActionSheet()"><ion-icon name="camera"></ion-icon></ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+
+  <ion-item>
+    <ion-label>Athlete</ion-label>
+<!--
+    <ionic-selectable
+      item-content
+      [(ngModel)]="score.athlete"
+      [items]="athletes"
+      itemValueField="athlete"
+      itemTextField="name"
+      [canSearch]="true"
+      (onChange)="athleteChange($event)">
+    </ionic-selectable>
+  -->
+  </ion-item>
+  <ion-item>
+    <ion-label>Judge</ion-label>
+<!--
+    <ionic-selectable
+      item-content
+      [(ngModel)]="score.judge"
+      [items]="judges"
+      itemValueField="judge"
+      itemTextField="name"
+      [canSearch]="true"
+      (onChange)="judgeChange($event)">
+    </ionic-selectable>
+-->
+  </ion-item>
+
+  <ion-label>Judge Certified</ion-label>
+<!--
+  <ion-list radio-group [(ngModel)]="score.judge.certified">
+    <ion-item>
+      <ion-label>Yes</ion-label>
+      <ion-radio value="true"></ion-radio>
+    </ion-item>
+    <ion-item>
+      <ion-label>No</ion-label>
+      <ion-radio value="false"></ion-radio>
+    </ion-item>
+  </ion-list>
+-->
+  <ion-item>
+    <ion-label>Date</ion-label> 
+    <ion-datetime [(ngModel)]="score.date" displayFormat="DD/MMM/YYYY" pickerFormat="DD/MMM/YYYY" [min]="minDate" [max]="maxDate"></ion-datetime>
+  </ion-item>
+  <ion-item>
+    <ion-label>Location</ion-label> 
+    <ion-input [(ngModel)]="score.location"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Time</ion-label> 
+    <ion-input [(ngModel)]="score.timeScored"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Score</ion-label> 
+    <ion-input [(ngModel)]="score.score" type="number"></ion-input>
+  </ion-item>
+
+  <img [src]="score.imgUrl" *ngIf="score.imgUrl" (click)="presentActionSheet()"/>
 </ion-content>

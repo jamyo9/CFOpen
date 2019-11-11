@@ -1,4 +1,3 @@
-import { Classification } from './../../models/classification';
 import { AthleteService } from './../services/athlete.service';
 import { Score } from './../../models/score';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
@@ -47,6 +46,7 @@ export class EventDetailsPage implements OnInit {
 
             // obtain the menRx classification
             this.obtainClassification('menRx', this.event.id);
+            this.pageTitle = this.event.name;
         });
       }
     });
@@ -100,7 +100,7 @@ export class EventDetailsPage implements OnInit {
               score.payload.doc.data().location,
               score.payload.doc.data().timeScored,
               score.payload.doc.data().score);
-            s.id = score.payload.doc.data().id;
+            s.id = score.payload.doc.id;
 
             // obtain the details of the athlete
             const athleteId = score.payload.doc.data().athlete;
@@ -122,13 +122,22 @@ export class EventDetailsPage implements OnInit {
     });
   }
 
-  addScore(id: string) {
-    const navigationExtras: NavigationExtras = {
-      state: {
-        idEvent: id
-      }
-    };
+  addEditScore(eventId: string, scoreId?: string) {
+    let navigationExtras: NavigationExtras = {};
+    if (scoreId != null) {
+      navigationExtras = {
+        state: {
+          idEvent: eventId,
+          idScore: scoreId
+        }
+      };
+    } else {
+      navigationExtras = {
+        state: {
+          idEvent: eventId
+        }
+      };
+    }
     this.router.navigate(['edit-score'], navigationExtras);
-
   }
 }

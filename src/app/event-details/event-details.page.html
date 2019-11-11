@@ -5,7 +5,7 @@
         <ion-icon name="menu"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-title>Event</ion-title>
+    <ion-title>{{ pageTitle }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -27,15 +27,15 @@
   </ion-item>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-      <ion-fab-button>
-        <ion-icon name="add" (click)="addScore(event.id)"></ion-icon>
-      </ion-fab-button>
-    </ion-fab>
+    <ion-fab-button>
+      <ion-icon name="add" (click)="addEditScore(event.id)"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 
   <ion-label>{{ categoryTitle }}</ion-label>
-  <ion-card *ngFor="let c of classification"><!-- (click)='open20Details(c.id)'>-->
+  <ion-card *ngFor="let score of classification" (click)='addEditScore(event.id, score.id)'>
     <ion-item>
-      <h2>{{c.position}} - {{c.athlete.name}} {{c.athlete.lastName}} - {{c.timeScored}} / {{c.score}} Points</h2>
+      <h2>{{score.position}} - {{score.athlete.name}} {{score.athlete.lastName}} - {{score.timeScored}} / {{score.score}} Points</h2>
     </ion-item>
   </ion-card>
 </ion-content>

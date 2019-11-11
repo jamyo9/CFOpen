@@ -4,18 +4,17 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class AthleteService {
+export class JudgeService {
   constructor(private firestore: AngularFirestore) {
 
   }
 
-  getAthleteById(athleteId: string) {
+  getJudgeById(judgeId: string) {
     return new Promise<any>((resolve, reject) => {
-      this.firestore.collection('/athletes').doc(athleteId).snapshotChanges()
+      this.firestore.collection('/judges').doc(judgeId).snapshotChanges()
       .subscribe(ret => {
         resolve(ret);
       });
     });
   }
-
 }
