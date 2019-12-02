@@ -17,10 +17,10 @@ export class AthleteService {
 
     // TODO añadir idEvent a la query
     new Promise<any>((resolve, reject) => {
-      this.firestore.collection('/athletes').snapshotChanges()
-      .subscribe(ret => {
-        resolve(ret);
-      });
+      this.firestore.collection('/athletes', ref => ref.where('idEvento','==', idEvent)).snapshotChanges()
+        .subscribe(ret => {
+          resolve(ret);
+        });
     }).then(result => {
       result.forEach(a => {
         const ath = new Athlete(

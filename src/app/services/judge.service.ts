@@ -24,12 +24,11 @@ export class JudgeService {
 
     const judges = [];
 
-    // TODO añadir idEvent a la query
     const promise = new Promise<any>((resolve, reject) => {
-      this.firestore.collection('/judges').snapshotChanges()
-      .subscribe(ret => {
-        resolve(ret);
-      });
+      this.firestore.collection('/judges', ref => ref.where('idEvento','==', eventId )).snapshotChanges()
+        .subscribe(ret => {
+          resolve(ret);
+        });
     }).then(result => {
       result.forEach(j => {
         const jud = new Judge(
