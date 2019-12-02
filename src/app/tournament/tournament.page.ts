@@ -18,19 +18,8 @@ export class TournamentPage implements OnInit {
     private router: Router
     ) {
 
-    this.tournamentService.getTournaments()
-      .then(result => {
-        this.tournaments = result;
-        result.forEach(t => {
-          const tournament = new Tournament(
-            t.payload.doc.data().name,
-            t.payload.doc.data().startDate.toDate(),
-            t.payload.doc.data().page
-          );
-          tournament.id = t.payload.doc.id;
-          this.tournaments.push(tournament);
-        });
-      });
+    this.tournaments = this.tournamentService.getTournaments();
+    this.pageTitle = 'Tournaments';
   }
 
   ngOnInit() {

@@ -1,9 +1,7 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons left>
-        <button ion-button menuToggle>
-        <ion-icon name="menu"></ion-icon>
-      </button>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>{{ pageTitle }}</ion-title>
   </ion-toolbar>
@@ -16,8 +14,8 @@
       <ion-icon name="arrow-dropup"></ion-icon>
     </ion-fab-button>
     <ion-fab-list side="top">
-      <ion-fab-button (click)="deleteScore()"><ion-icon name="trash"></ion-icon></ion-fab-button>
       <ion-fab-button (click)="cancelScore()"><ion-icon name="close"></ion-icon></ion-fab-button>
+      <ion-fab-button (click)="deleteScore()"><ion-icon name="trash"></ion-icon></ion-fab-button>
       <ion-fab-button (click)="saveScore()"><ion-icon name="checkmark"></ion-icon></ion-fab-button>
       <ion-fab-button (click)="presentActionSheet()"><ion-icon name="camera"></ion-icon></ion-fab-button>
     </ion-fab-list>
@@ -27,7 +25,6 @@
     <ion-label>Athlete</ion-label>
 <!--
     <ionic-selectable
-      item-content
       [(ngModel)]="score.athlete"
       [items]="athletes"
       itemValueField="athlete"
@@ -35,8 +32,23 @@
       [canSearch]="true"
       (onChange)="athleteChange($event)">
     </ionic-selectable>
-  -->
+-->
+    <ion-select [(ngModel)]="score.athlete" [compareWith]="compareObj">
+      <ion-select-option *ngFor="let a of athletes" [value]="a">{{a.name + ' ' + a.lastName}}</ion-select-option>
+    </ion-select>
   </ion-item>
+
+  <ion-item>
+    <ion-label>Category</ion-label>
+    <ion-select [(ngModel)]="score.category">
+      <ion-select-option value="menRx">Men Rx</ion-select-option>
+      <ion-select-option value="womenRx">Women Rx</ion-select-option>
+      <ion-select-option value="menSc">Men Sc</ion-select-option>
+      <ion-select-option value="womenSc">Women Sc</ion-select-option>
+      <ion-select-option value="55">55+</ion-select-option>
+    </ion-select>
+  </ion-item>
+  
   <ion-item>
     <ion-label>Judge</ion-label>
 <!--
@@ -50,37 +62,32 @@
       (onChange)="judgeChange($event)">
     </ionic-selectable>
 -->
+    <ion-select [(ngModel)]="score.judge" [compareWith]="compareObj">
+      <ion-select-option *ngFor="let j of judges" [value]="j">{{j.name + ' ' + j.lastName}}</ion-select-option>
+    </ion-select>
   </ion-item>
 
-  <ion-label>Judge Certified</ion-label>
-<!--
-  <ion-list radio-group [(ngModel)]="score.judge.certified">
-    <ion-item>
-      <ion-label>Yes</ion-label>
-      <ion-radio value="true"></ion-radio>
-    </ion-item>
-    <ion-item>
-      <ion-label>No</ion-label>
-      <ion-radio value="false"></ion-radio>
-    </ion-item>
-  </ion-list>
--->
   <ion-item>
-    <ion-label>Date</ion-label> 
-    <ion-datetime [(ngModel)]="score.date" displayFormat="DD/MMM/YYYY" pickerFormat="DD/MMM/YYYY" [min]="minDate" [max]="maxDate"></ion-datetime>
+    <ion-label>Date</ion-label>
+    <!--<ion-datetime [(ngModel)]="score.date" displayFormat="DD/MMM/YYYY" pickerFormat="DD/MMM/YYYY" [min]="minDate" [max]="maxDate"></ion-datetime>-->
+    <ion-datetime [(ngModel)]="score.date" displayFormat="DD/MMM/YYYY" pickerFormat="DD/MMM/YYYY"></ion-datetime>
   </ion-item>
+
   <ion-item>
     <ion-label>Location</ion-label> 
     <ion-input [(ngModel)]="score.location"></ion-input>
   </ion-item>
+
   <ion-item>
-    <ion-label>Time</ion-label> 
+    <ion-label>Time</ion-label>
     <ion-input [(ngModel)]="score.timeScored"></ion-input>
   </ion-item>
+
   <ion-item>
     <ion-label>Score</ion-label> 
     <ion-input [(ngModel)]="score.score" type="number"></ion-input>
   </ion-item>
 
   <img [src]="score.imgUrl" *ngIf="score.imgUrl" (click)="presentActionSheet()"/>
+  <!--<img [src]="capturedSnapURL" />-->
 </ion-content>

@@ -1,5 +1,5 @@
 export class Athlete {
-    id: number;
+    id: string;
     name: string;
     lastName: string;
     dni: string;

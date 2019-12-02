@@ -1,3 +1,5 @@
+import { Tournament } from './../../models/tournament';
+import { TournamentService } from './../services/tournament.service';
 import { EventService } from './../services/event.service';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
@@ -10,36 +12,34 @@ import { Event } from './../../models/event';
 })
 export class EventPage implements OnInit {
 
-  pageTitle = '';
+  tournament: Tournament;
   events: Event[] = [];
+  
+  idTournament;
 
   constructor(
     private eventService: EventService,
+    private tournamentService: TournamentService,
     private router: Router,
     private activatedroute: ActivatedRoute
     ) {
      this.activatedroute.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
-        const idTournament = this.router.getCurrentNavigation().extras.state.idTournament;
-        this.eventService.getEvents(idTournament)
-          .then(result => {
-            this.events = result;
-            result.forEach(e => {
-              const event = new Event(
-                idTournament,
-                e.payload.doc.data().code,
-                e.payload.doc.data().name,
-                e.payload.doc.data().startDate.toDate(),
-                e.payload.doc.data().description              );
-              event.id = e.payload.doc.id;
-              this.events.push(event);
-            });
-        });
+        this.idTournament = this.router.getCurrentNavigation().extras.state.idTournament;
+        this.tournament =this.tournamentService.getTournamentDetails(this.idTournament);
       }
     });
   }
 
   ngOnInit() {
+  }
+
+  ionViewDidEnter() {
+    this.initPage();
+  }
+
+  initPage() {
+    this.events = this.eventService.getEvents(this.idTournament);
   }
 
   openEvent(id: string) {

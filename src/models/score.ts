@@ -7,22 +7,24 @@ export class Score {
     eventId: string;
     athlete: Athlete;
     judge: Judge;
-    date: Date;
+    date: string;
     imgUrl: string;
     scaled: boolean;
     location: string;
     timeScored: string;
     score: number;
     position: number;
+    category: string;
 
     constructor(
-        eventId: string, athlete: Athlete, judge: Judge,
-        date: Date, imgUrl: string, scaled: boolean, location: string,
+        eventId: string, athlete: Athlete, judge: Judge, category: string,
+        date: string, imgUrl: string, scaled: boolean, location: string,
         timeScored: string, score: number) {
         this.id = null;
         this.eventId = eventId;
         this.athlete = athlete;
         this.judge = judge;
+        this.category = category;
         this.date = date;
         this.imgUrl = imgUrl;
         this.scaled = scaled;

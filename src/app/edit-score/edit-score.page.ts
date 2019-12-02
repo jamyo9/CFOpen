@@ -1,12 +1,18 @@
-import { JudgeService } from './../services/judge.service';
 import { Judge } from './../../models/judge';
 import { Athlete } from './../../models/athlete';
+import { Score } from './../../models/score';
+
+import { JudgeService } from './../services/judge.service';
 import { EventService } from './../services/event.service';
 import { AthleteService } from './../services/athlete.service';
-import { Score } from './../../models/score';
+
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams, ActionSheetController } from '@ionic/angular';
+
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+
+import { IonicSelectableComponent } from 'ionic-selectable';
 
 @Component({
   selector: 'app-edit-score',
@@ -16,23 +22,33 @@ import { NavController, NavParams, ActionSheetController } from '@ionic/angular'
 export class EditScorePage implements OnInit {
 
   pageTitle: string;
-  score: Score;
-
-  showImgage = false;
+  score = new Score('', null, null, '', '', '', false, '', '', 0);
 
   // TODO give initial value
-  minDate: Date;
-  maxDate: Date;
+  minDate: string;
+  maxDate: string;
 
   athletes: Athlete[] = [];
   athlete: Athlete;
   judges: Judge[] = [];
   judge: Judge;
 
+  idEvent;
+  idScore;
+
+  // capturedSnapURL:string;
+
+  cameraOptions: CameraOptions = {
+    quality: 20,
+    destinationType: this.camera.DestinationType.DATA_URL,
+    encodingType: this.camera.EncodingType.JPEG,
+    mediaType: this.camera.MediaType.PICTURE
+  }
+
   constructor(
     public navCtrl: NavController,
     public actionSheetController: ActionSheetController,
-    // private camera: Camera,
+    private camera: Camera,
     private eventService: EventService,
     private athleteService: AthleteService,
     private judgeService: JudgeService,
@@ -41,63 +57,41 @@ export class EditScorePage implements OnInit {
   ) {
     this.activatedroute.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
-        this.score = new Score(
-          this.router.getCurrentNavigation().extras.state.idEvent,
-          null, null, new Date(), '', false, '', '', 0);
+        this.idEvent = this.router.getCurrentNavigation().extras.state.idEvent;
 
-        const idScore = this.router.getCurrentNavigation().extras.state.idScore;
-        if (idScore != null) {
+        // TODO uncomment when fixing the min & max date
+        // const event = this.eventService.getEventDetails(idEvent);
+        // this.minDate = event.startDate;
+        // this.maxDate = event.endDate;
+
+        this.idScore = this.router.getCurrentNavigation().extras.state.idScore;
+        if (this.idScore != null) {
           this.pageTitle = 'Edit Score';
-          // Obtain Score details
-          this.eventService.getScore(idScore)
-            .then(result => {
-
-              this.score.date = result.payload.data().date.toDate();
-              this.score.imgUrl = result.payload.data().imgUrl;
-              this.score.scaled = result.payload.data().scaled;
-              this.score.location = result.payload.data().location;
-              this.score.timeScored = result.payload.data().timeScore;
-              this.score.score = result.payload.data().score;
-              this.score.id = idScore;
-              this.score.position = result.payload.data().position;
-
-              // obtain the details of the athlete asigned to the score
-              this.athleteService.getAthleteById(result.payload.data().athlete)
-                .then(athlete => {
-                  const ath = new Athlete(
-                    athlete.payload.data().name,
-                    athlete.payload.data().lastName,
-                    athlete.payload.data().dni,
-                    athlete.payload.data().address,
-                    athlete.payload.data().email,
-                    athlete.payload.data().category);
-                  this.score.athlete = ath;
-                  this.athlete = ath;
-                });
-
-              // obtain the details of the judge asigned to the score
-              this.judgeService.getJudgeById(result.payload.data().judge)
-                .then(jud => {
-                  const judge = new Judge(
-                    jud.payload.data().name,
-                    jud.payload.data().lastName,
-                    jud.payload.data().dni,
-                    jud.payload.data().address,
-                    jud.payload.data().email,
-                    jud.payload.data().certified);
-                  this.score.judge = judge;
-                  this.judge = judge;
-                });
-          });
         } else {
           this.pageTitle = 'New Score';
         }
-
       }
     });
   }
 
   ngOnInit() {
+  }
+
+  ionViewDidEnter() {
+    this.initPage();
+  }
+
+  initPage() {
+    if (this.idScore != null) {
+      // Obtain Score details
+      this.score = this.eventService.getScore(this.idScore);
+    } else {
+      // set the id of the event to the score
+      this.score.eventId = this.idEvent;
+    }
+
+    this.athletes = this.athleteService.getAthletesByEvent(this.idEvent);
+    this.judges = this.judgeService.getJudgesByEvent(this.idEvent);
   }
 
   cancelScore() {
@@ -107,15 +101,16 @@ export class EditScorePage implements OnInit {
   saveScore() {
     this.eventService.saveScore(this.score)
       .then(ret => {
-        // this.navCtrl.pop();
+        
       });
-    this.navCtrl.pop();
+      // TODO add catch block for errors
+      this.navCtrl.pop();
   }
 
   deleteScore() {
     this.eventService.deleteScore(this.score)
       .then(ret => {
-        // this.navCtrl.pop();
+        
       });
     this.navCtrl.pop();
   }
@@ -126,14 +121,15 @@ export class EditScorePage implements OnInit {
         text: 'New',
         icon: 'camera',
         handler: () => {
-          this.takePicture(this.score.id);
+          // this.takePicture(this.score.id);
+          this.takePicture();
         }
       }, {
         text: 'Delete',
         icon: 'trash',
         handler: () => {
           // this.score = this.scoresProvider.deleteImage(this.score.id);
-          this.showImg();
+          this.score.imgUrl = null;
         }
       },  {
         text: 'Cancel',
@@ -147,9 +143,9 @@ export class EditScorePage implements OnInit {
     await actionSheet.present();
   }
 
+  /*
   takePicture(scoreId: number) {
     console.log('Add Picture');
-    /*
     this.camera.getPicture({
             quality: 100,
             destinationType: this.camera.DestinationType.FILE_URI,
@@ -163,14 +159,38 @@ export class EditScorePage implements OnInit {
      }, (err) => {
       // Handle error
      });
-     */
+  }
+  */
+  takePicture() {
+    this.camera.getPicture(this.cameraOptions).then((imageData) => {
+      // this.camera.DestinationType.FILE_URI gives file URI saved in local
+      // this.camera.DestinationType.DATA_URL gives base64 URI
+      let base64Image = 'data:image/jpeg;base64,' + imageData;
+      // this.capturedSnapURL = base64Image;
+      this.score.imgUrl = base64Image;
+      // this.score = this.eventService.saveImage(base64Image, this.score.id);
+    }, (err) => {
+      console.log(err);
+      // Handle error
+    });
   }
 
-  showImg() {
-    if (this.score.imgUrl) {
-      this.showImgage = true;
-    } else {
-      this.showImgage = false;
-    }
+/*
+  athleteChange(event: {
+    component: IonicSelectableComponent,
+    value: any
+  }) {
+    console.log('athlete:', event.value);
+  }
+
+  judgeChange(event: {
+    component: IonicSelectableComponent,
+    value: any
+  }) {
+    console.log('athlete:', event.value);
+  }
+*/
+  compareObj(a1: any, a2: any): boolean {
+    return a1 && a2 ? a1.id === a2.id : a1 === a2;
   }
 }
