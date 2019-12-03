@@ -1,5 +1,6 @@
 <ion-app>
   <ion-split-pane>
+    <!--<ion-menu type="overlay" *ngIf="isLoggedIn">-->
     <ion-menu type="overlay">
       <ion-header>
         <ion-toolbar>
@@ -14,6 +15,14 @@
               <ion-label>
                 {{p.title}}
               </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+        </ion-list>
+
+        <ion-list>
+          <ion-menu-toggle auto-hide="false">
+            <ion-item>
+              <button ion-button  (click)="logout()">Logout</button>
             </ion-item>
           </ion-menu-toggle>
         </ion-list>

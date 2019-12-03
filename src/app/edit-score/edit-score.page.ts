@@ -170,7 +170,7 @@ export class EditScorePage implements OnInit {
       this.score.imgUrl = base64Image;
       // this.score = this.eventService.saveImage(base64Image, this.score.id);
     }, (err) => {
-      console.log(err);
+      console.error(err);
       // Handle error
     });
   }

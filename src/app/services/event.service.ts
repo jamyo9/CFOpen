@@ -149,7 +149,6 @@ export class EventService {
   }
 
   deleteScore(score: Score) {
-    console.log('DELETE SCORE');
     // Call API to delete score
     return this.firestore.doc<any>('/scores/' + score.id).delete();
   }
