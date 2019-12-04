@@ -1,3 +1,4 @@
+import { AuthService } from './../services/auth.service';
 import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
@@ -10,28 +11,22 @@ import { User } from 'src/models/user';
 })
 export class RegisterPage {
 
-  public user:User = new User('', '');
+  email: string = '';
+  password: string = '';
   pageTitle = '';
 
   constructor(
     private router: Router,
-    public fAuth: AngularFireAuth){
+    public fAuth: AngularFireAuth,
+    private authService: AuthService){
 
       this.pageTitle = 'Register';
   }
 
   async register() {
-    try {
-      var r = await this.fAuth.auth.createUserWithEmailAndPassword(
-        this.user.email,
-        this.user.password
-      );
-      if (r) {
-        this.router.navigate(['login']);
-      }
-
-    } catch (err) {
-      console.error(err);
+    var registeredUser = this.authService.registerUser(this.email, this.password);
+    if ( registeredUser != null ) {
+      this.router.navigate(['login']);
     }
   }
 }

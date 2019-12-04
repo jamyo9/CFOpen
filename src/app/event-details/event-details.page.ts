@@ -1,3 +1,6 @@
+import { User } from 'src/models/user';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { AuthService } from './../services/auth.service';
 import { Score } from './../../models/score';
 import { Event } from './../../models/event';
 
@@ -5,7 +8,7 @@ import { EventService } from './../services/event.service';
 
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import * as _ from 'lodash'
 
 @Component({
   selector: 'app-event-details',
@@ -19,16 +22,22 @@ export class EventDetailsPage implements OnInit {
   categoryTitle = 'Men Rx';
   idEvent;
 
+  // loggedInUser: User;
+  // isJudge: boolean = false;
+
   constructor(
     private eventService: EventService,
     private router: Router,
-    private activatedroute: ActivatedRoute
+    private activatedroute: ActivatedRoute,
+    private fAuth: AngularFireAuth,
+    private authService: AuthService
     ) {
-    this.activatedroute.queryParams.subscribe(params => {
-      if (this.router.getCurrentNavigation().extras.state) {
-        this.idEvent = this.router.getCurrentNavigation().extras.state.idEvent;
-      }
-    });
+      
+      this.activatedroute.queryParams.subscribe(params => {
+        if (this.router.getCurrentNavigation().extras.state) {
+          this.idEvent = this.router.getCurrentNavigation().extras.state.idEvent;
+        }
+      });
   }
 
   ngOnInit() {

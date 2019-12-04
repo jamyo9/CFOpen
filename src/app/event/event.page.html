@@ -16,4 +16,10 @@
       <p>{{ e.startDate | date: 'dd/MM/yyyy' }}</p>
     </ion-card-content>
   </ion-card>
+
+  <ion-fab *ngIf="authService.isAdmin" vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button>
+        <ion-icon name="add" (click)="openNewEventPage(tournament.id)"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
 </ion-content>

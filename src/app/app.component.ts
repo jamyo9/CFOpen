@@ -52,27 +52,23 @@ export class AppComponent {
       this.splashScreen.hide();
     });
 
-    this.authService.authenticated.subscribe(state => {
-      if (state) {
-          this.navController.navigateRoot('home');
-          this.splashScreen.hide();
-      } else {
-          this.navController.navigateRoot('login');
-          this.splashScreen.hide();
-      }
-  });
+    console.log(this.authService.user);
+
+    if (this.authService.user) {
+        this.navController.navigateRoot('home');
+        this.splashScreen.hide();
+    } else {
+        this.navController.navigateRoot('login');
+        this.splashScreen.hide();
+    }
   }
 
   logout() {
-    this.authService.logout().subscribe(allowed => {
-      if (allowed) {
+    this.authService.logout().then(result => {
         this.navController.navigateRoot('');
         this.splashScreen.hide();
-      } else {
-        // this.showError('Error Clossing Session');
-      }
-    },
-      error => {
+      },
+        error => {
         // this.showError(error);
       });
   }

@@ -24,7 +24,7 @@
     </ion-select>
   </ion-item>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab *ngIf="authService.isJudge" vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button>
       <ion-icon name="add" (click)="addEditScore(event.id)"></ion-icon>
     </ion-fab-button>

@@ -1,4 +1,6 @@
-import { AuthGuard } from './services/auth-guard.service';
+import { AdminGuard } from './guards/admin-guard.service';
+import { JudgeGuard } from './guards/judge-guard.service';
+import { AuthGuard } from './guards/auth-guard.service';
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
@@ -40,8 +42,13 @@ const routes: Routes = [
   },
   { 
     path: 'edit-score',
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, JudgeGuard],
     loadChildren: () => import ('./edit-score/edit-score.module').then(m => m.EditScorePageModule)
+  },
+  {
+    path: 'edit-event',
+    canActivate: [AuthGuard, AdminGuard],
+    loadChildren: () => import ('./edit-event/edit-event.module').then(m => m.EditEventPageModule)
   }
 ];
 

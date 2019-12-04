@@ -1,3 +1,4 @@
+import { AuthService } from './../services/auth.service';
 // import { AppComponent } from './../app.component';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
@@ -11,12 +12,13 @@ import { User } from 'src/models/user';
 })
 export class LoginPage implements OnInit {
 
-  public user:User = new User('', '');
+  email: string = '';
+  password: string = '';
   pageTitle = '';
 
   constructor(
     private router: Router,
-    // private appComponent: AppComponent,
+    private authService: AuthService,
     private fAuth: AngularFireAuth) {
 
       this.pageTitle = 'Login';
@@ -25,17 +27,12 @@ export class LoginPage implements OnInit {
   ngOnInit() {
   }
 
-  async login() {
+  login() {
     try {
-      var r = await this.fAuth.auth.signInWithEmailAndPassword(
-        this.user.email,
-        this.user.password
-      );
+      var r = this.authService.loginUser(this.email, this.password);
       if (r) {
-        // this.appComponent.isLoggedIn = true;
         this.router.navigate(['home'], {replaceUrl: true})
       }
-
     } catch (err) {
       console.error(err);
     }

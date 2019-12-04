@@ -3,7 +3,7 @@ import { Athlete } from './athlete';
 
 
 export class Score {
-    id: number;
+    id: string;
     eventId: string;
     athlete: Athlete;
     judge: Judge;

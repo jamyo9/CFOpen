@@ -1,5 +1,9 @@
+export interface UserRoles {
+    user: boolean;
+    judge?: boolean;
+    admin?:  boolean;
+  }
 export class User {
-    id: number;
     name: string;
     lastName: string;
     category: string;
@@ -8,10 +12,11 @@ export class User {
     dni: string;
     address: string;
     email: string;
-    password: string;
+    userRoles: UserRoles;
 
     constructor(name: string, email: string) {
         this.name = name;
         this.email = email;
+        this.userRoles    = { user: true }
     }
 }

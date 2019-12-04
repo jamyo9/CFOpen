@@ -7,27 +7,27 @@ import { Score } from './../../models/score';
 import { FirebaseService } from './firebase.service';
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { AngularFireDatabase } from '@angular/fire/database';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EventService {
-  
   constructor(
     private athleteService: AthleteService,
     private judgeService: JudgeService,
     // private firebaseService: FirebaseService,
+    public afDatabase: AngularFireDatabase,
     private firestore: AngularFirestore) { }
 
   getEvents(idTournament: string) {
     const events = [];
-    // TODO añadir idTournament a la query
     new Promise<any>((resolve, reject) => {
-      this.firestore.collection('/events').snapshotChanges()
-      .subscribe(ret => {
+      this.firestore.collection('/events', ref => ref.where('idTournament','==', idTournament))
+      .snapshotChanges().subscribe(ret => {
         resolve(ret);
       });
-    }).then(result => {
+    }).then((result => {
       result.forEach(e => {
         const event = new Event(
           idTournament,
@@ -39,10 +39,27 @@ export class EventService {
         event.id = e.payload.doc.id;
         events.push(event);
       });
-    });
+    }));
     return events
   }
 
+  deleteEvent(event: Event) {
+     // Call API to delete event
+     return this.firestore.doc<any>('/events/' + event.id).delete();
+  }
+  saveEvent(event: Event) {
+    return new Promise<any>((resolve, reject) => {
+      if (event.id != null) {
+        // save event
+        return this.firestore.doc<Score>('/events/' + event.id).update(JSON.parse(JSON.stringify(event)));
+      } else {
+        // add new event
+        return this.firestore.collection<Score>('/events').add(JSON.parse(JSON.stringify(event)));
+        // TODO there is an id property generated and it is set to ''
+      }
+    });
+  }
+  
   getEventDetails(idEvent: string): Event {
     const event = new Event('', '', '', '', '', '');
     new Promise<any>((resolve, reject) => {
@@ -64,40 +81,40 @@ export class EventService {
   }
 
   getClassificationEvent(category: string, idEvent: string): Score[] {
+        
     const classificationRet = [];
+
     new Promise<any>((resolve, reject) => {
-      // TODO añadir idEvent y category a la query
-      // this.firestore.collection('/scores').doc(idEvent).snapshotChanges()
-      this.firestore.collection('/scores').snapshotChanges()
-      .subscribe(ret => {
+      this.firestore.collection('/scores', ref => ref.where('eventId','==', idEvent)
+      .where('category','==', category))
+      .snapshotChanges().subscribe(ret => {
         resolve(ret);
       });
-    })
-    .then(classification => {
-      classification.forEach(score => {
-          const athlete = new Athlete(
-            score.payload.doc.data().athlete.name,
-            score.payload.doc.data().athlete.lastName,
-            score.payload.doc.data().athlete.dni,
-            score.payload.doc.data().athlete.address,
-            score.payload.doc.data().athlete.email,
-            score.payload.doc.data().athlete.category
-          );
-          athlete.id = score.payload.doc.data().athlete.id;
-          const s = new Score(
-            idEvent, athlete, null,
-            score.payload.doc.data().category,
-            score.payload.doc.data().date,
-            score.payload.doc.data().imgUrl,
-            score.payload.doc.data().scaled,
-            score.payload.doc.data().location,
-            score.payload.doc.data().timeScored,
-            score.payload.doc.data().score);
-          s.category = category;
-          s.id = score.payload.doc.id;
-          classificationRet.push(s);
+    }).then((result => {
+      result.forEach(score => {
+        const athlete = new Athlete(
+          score.payload.doc.data().athlete.name,
+          score.payload.doc.data().athlete.lastName,
+          score.payload.doc.data().athlete.dni,
+          score.payload.doc.data().athlete.address,
+          score.payload.doc.data().athlete.email,
+          score.payload.doc.data().athlete.category
+        );
+        athlete.id = score.payload.doc.data().athlete.id;
+        const s = new Score(
+          idEvent, athlete, null,
+          score.payload.doc.data().category,
+          score.payload.doc.data().date,
+          score.payload.doc.data().imgUrl,
+          score.payload.doc.data().scaled,
+          score.payload.doc.data().location,
+          score.payload.doc.data().timeScored,
+          score.payload.doc.data().score);
+        s.category = category;
+        s.id = score.payload.doc.id;
+        classificationRet.push(s);
       });
-    });
+    }));
     
     return classificationRet;
   }
@@ -154,7 +171,6 @@ export class EventService {
   }
 
   saveScore(score: Score) {
-    // TODO uncomment next lines to call API to save score
     return new Promise<any>((resolve, reject) => {
       if (score.id != null) {
         // save score
