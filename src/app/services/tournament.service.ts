@@ -46,9 +46,9 @@ export class TournamentService {
     .then(result => {
       tournament.id = idTournament;
       tournament.name = result.payload.data().name;
-      tournament.page = result.payload.data().page;
       tournament.startDate = result.payload.data().startDate;
       tournament.endDate = result.payload.data().endDate;
+      tournament.description = result.payload.data().description;
     });
     return tournament;
   }
