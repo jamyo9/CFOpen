@@ -4,12 +4,12 @@ export class Tournament {
     name: string;
     startDate: string;
     endDate: string;
-    page: string;
+    description: string;
 
-    constructor(name: string, startDate: string, endDate: string, page: string) {
+    constructor(name: string, startDate: string, endDate: string, description: string) {
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.page = page;
+        this.description = description;
     }
 }

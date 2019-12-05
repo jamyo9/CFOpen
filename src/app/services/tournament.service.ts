@@ -7,6 +7,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
   providedIn: 'root'
 })
 export class TournamentService {
+
   constructor(
     private firebaseService: FirebaseService,
     private firestore: AngularFirestore) {
@@ -67,15 +68,20 @@ export class TournamentService {
     return tournamentName;
   }
 
-  addTournament(tournament: Tournament) {
-    this.firestore.collection('/tournaments/').add(tournament);
+  saveTournament(tournament: Tournament) {
+    return new Promise<any>((resolve, reject) => {
+      if (tournament.id != null) {
+        // save score
+        return this.firestore.doc<Tournament>('/tournaments/' + tournament.id).update(JSON.parse(JSON.stringify(tournament)));
+      } else {
+        // add new score
+        return this.firestore.collection<Tournament>('/tournaments').add(JSON.parse(JSON.stringify(tournament)));
+        // TODO there is an id property generated and it is set to ''
+      }
+    });
   }
-
-  removeTournament(id: number) {
-    this.firestore.doc('/tournaments/' + id).delete();
-  }
-
-  updateTournament(tournament: Tournament) {
-    this.firestore.doc('/tournaments/' + tournament.id).update(tournament);
+  deleteTournament(tournament: Tournament) {
+    // Call API to delete score
+    return this.firestore.doc<any>('/tournaments/' + tournament.id).delete();
   }
 }

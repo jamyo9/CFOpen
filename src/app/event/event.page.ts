@@ -1,15 +1,13 @@
-import { AuthService } from './../services/auth.service';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { User } from 'src/models/user';
+import { Event } from './../../models/event';
 import { Tournament } from './../../models/tournament';
+
+import { AuthService } from './../services/auth.service';
 import { TournamentService } from './../services/tournament.service';
 import { EventService } from './../services/event.service';
+
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
-import { Event } from './../../models/event';
-import { switchMap } from 'rxjs/operators';
-import { of } from 'rxjs';
-import * as _ from 'lodash';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-event',
@@ -27,6 +25,7 @@ export class EventPage implements OnInit {
   // isAdmin: boolean = false;
 
   constructor(
+    public navCtrl: NavController,
     private eventService: EventService,
     private tournamentService: TournamentService,
     private authService: AuthService,
@@ -68,5 +67,18 @@ export class EventPage implements OnInit {
       }
     };
     this.router.navigate(['edit-event'], navigationExtras);
+  }
+
+  openEditTournamentPage(id: string) {
+    const navigationExtras: NavigationExtras = {
+      state: {
+        tournamentId: id
+      }
+    };
+    this.router.navigate(['edit-tournament'], navigationExtras);
+  }
+
+  cancelTournament() {
+    this.navCtrl.pop();
   }
 }

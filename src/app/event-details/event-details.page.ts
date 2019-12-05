@@ -1,11 +1,11 @@
-import { User } from 'src/models/user';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { AuthService } from './../services/auth.service';
 import { Score } from './../../models/score';
 import { Event } from './../../models/event';
 
+import { AuthService } from './../services/auth.service';
 import { EventService } from './../services/event.service';
 
+import { AngularFireAuth } from '@angular/fire/auth';
+import { NavController } from '@ionic/angular';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import * as _ from 'lodash';
@@ -26,6 +26,7 @@ export class EventDetailsPage implements OnInit {
   // isJudge: boolean = false;
 
   constructor(
+    public navCtrl: NavController,
     private eventService: EventService,
     private router: Router,
     private activatedroute: ActivatedRoute,
@@ -98,5 +99,9 @@ export class EventDetailsPage implements OnInit {
       }
     };
     this.router.navigate(['edit-event'], navigationExtras);
+  }
+
+  cancelEvent() {
+    this.navCtrl.pop();
   }
 }

@@ -49,6 +49,11 @@ const routes: Routes = [
     path: 'edit-event',
     canActivate: [AuthGuard, AdminGuard],
     loadChildren: () => import ('./edit-event/edit-event.module').then(m => m.EditEventPageModule)
+  },
+  {
+    path: 'edit-tournament',
+    canActivate: [AuthGuard, AdminGuard],
+    loadChildren: () => import ('./edit-tournament/edit-tournament.module').then(m => m.EditTournamentPageModule)
   }
 ];
 

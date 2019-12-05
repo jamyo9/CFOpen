@@ -1,0 +1,41 @@
+<ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>{{ pageTitle }}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+<ion-content>
+    <ion-item>
+      <!--<ion-label>Name</ion-label>-->
+      <ion-input [(ngModel)]="tournament.name" placeholder="Name"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <!--<ion-label>Start Date</ion-label>-->
+      <ion-datetime [(ngModel)]="tournament.startDate" displayFormat="DD/MMM/YYYY" pickerFormat="DD/MMM/YYYY" placeholder="Start Date"></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <!--<ion-label>End Date</ion-label>-->
+      <ion-datetime [(ngModel)]="tournament.endDate" displayFormat="DD/MMM/YYYY" pickerFormat="DD/MMM/YYYY" placeholder="End Date"></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <!--<ion-label>Descriptin</ion-label>-->
+      <ion-textarea [(ngModel)]="tournament.description" placeholder="Description"></ion-textarea>
+    </ion-item>
+
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button>
+          <ion-icon name="arrow-dropup"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-list side="top">
+          <ion-fab-button (click)="cancelTournament()"><ion-icon name="close"></ion-icon></ion-fab-button>
+          <ion-fab-button (click)="deleteTournament()"><ion-icon name="trash"></ion-icon></ion-fab-button>
+          <ion-fab-button (click)="saveTournament()"><ion-icon name="checkmark"></ion-icon></ion-fab-button>
+        </ion-fab-list>
+      </ion-fab>
+</ion-content>
