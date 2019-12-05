@@ -23,7 +23,7 @@ export class EventService {
   getEvents(idTournament: string) {
     const events = [];
     new Promise<any>((resolve, reject) => {
-      this.firestore.collection('/events', ref => ref.where('idTournament','==', idTournament))
+      this.firestore.collection('/events', ref => ref.where('idTournament', '==', idTournament))
       .snapshotChanges().subscribe(ret => {
         resolve(ret);
       });
@@ -40,7 +40,7 @@ export class EventService {
         events.push(event);
       });
     }));
-    return events
+    return events;
   }
 
   deleteEvent(event: Event) {
@@ -59,7 +59,7 @@ export class EventService {
       }
     });
   }
-  
+
   getEventDetails(idEvent: string): Event {
     const event = new Event('', '', '', '', '', '');
     new Promise<any>((resolve, reject) => {
@@ -81,12 +81,12 @@ export class EventService {
   }
 
   getClassificationEvent(category: string, idEvent: string): Score[] {
-        
+
     const classificationRet = [];
 
     new Promise<any>((resolve, reject) => {
-      this.firestore.collection('/scores', ref => ref.where('eventId','==', idEvent)
-      .where('category','==', category))
+      this.firestore.collection('/scores', ref => ref.where('eventId', '==', idEvent)
+      .where('category', '==', category))
       .snapshotChanges().subscribe(ret => {
         resolve(ret);
       });
@@ -115,7 +115,7 @@ export class EventService {
         classificationRet.push(s);
       });
     }));
-    
+
     return classificationRet;
   }
 

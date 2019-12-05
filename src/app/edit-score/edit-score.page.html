@@ -17,7 +17,7 @@
       <ion-fab-button (click)="cancelScore()"><ion-icon name="close"></ion-icon></ion-fab-button>
       <ion-fab-button (click)="deleteScore()"><ion-icon name="trash"></ion-icon></ion-fab-button>
       <ion-fab-button (click)="saveScore()"><ion-icon name="checkmark"></ion-icon></ion-fab-button>
-      <ion-fab-button (click)="presentActionSheet()"><ion-icon name="camera"></ion-icon></ion-fab-button>
+      <ion-fab-button (click)="presentActionSheet()" *ngIf='score.id'><ion-icon name="camera"></ion-icon></ion-fab-button>
     </ion-fab-list>
   </ion-fab>
 

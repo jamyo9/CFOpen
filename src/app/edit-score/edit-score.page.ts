@@ -1,3 +1,4 @@
+import { ImageService } from './../services/image.service';
 import { Judge } from './../../models/judge';
 import { Athlete } from './../../models/athlete';
 import { Score } from './../../models/score';
@@ -8,11 +9,9 @@ import { AthleteService } from './../services/athlete.service';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { NavController, NavParams, ActionSheetController } from '@ionic/angular';
+import { NavController, ActionSheetController } from '@ionic/angular';
 
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
-
-import { IonicSelectableComponent } from 'ionic-selectable';
 
 @Component({
   selector: 'app-edit-score',
@@ -36,15 +35,6 @@ export class EditScorePage implements OnInit {
   idEvent;
   idScore;
 
-  // capturedSnapURL:string;
-
-  cameraOptions: CameraOptions = {
-    quality: 20,
-    destinationType: this.camera.DestinationType.DATA_URL,
-    encodingType: this.camera.EncodingType.JPEG,
-    mediaType: this.camera.MediaType.PICTURE
-  }
-
   constructor(
     public navCtrl: NavController,
     public actionSheetController: ActionSheetController,
@@ -53,7 +43,8 @@ export class EditScorePage implements OnInit {
     private athleteService: AthleteService,
     private judgeService: JudgeService,
     private router: Router,
-    private activatedroute: ActivatedRoute
+    private activatedroute: ActivatedRoute,
+    private imageService: ImageService
   ) {
     this.activatedroute.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
@@ -101,17 +92,18 @@ export class EditScorePage implements OnInit {
   saveScore() {
     this.eventService.saveScore(this.score)
       .then(ret => {
-        
+
       });
       // TODO add catch block for errors
-      this.navCtrl.pop();
+    this.navCtrl.pop();
   }
 
-  deleteScore() {
-    this.eventService.deleteScore(this.score)
-      .then(ret => {
-        
-      });
+  async deleteScore() {
+    await this.eventService.deleteScore(this.score)
+    .then(ret => {
+
+    });
+    // TODO add catch block for errors
     this.navCtrl.pop();
   }
 
@@ -121,15 +113,13 @@ export class EditScorePage implements OnInit {
         text: 'New',
         icon: 'camera',
         handler: () => {
-          // this.takePicture(this.score.id);
           this.takePicture();
         }
       }, {
         text: 'Delete',
         icon: 'trash',
         handler: () => {
-          // this.score = this.scoresProvider.deleteImage(this.score.id);
-          this.score.imgUrl = null;
+          this.deleteImage();
         }
       },  {
         text: 'Cancel',
@@ -143,53 +133,37 @@ export class EditScorePage implements OnInit {
     await actionSheet.present();
   }
 
-  /*
-  takePicture(scoreId: number) {
-    console.log('Add Picture');
-    this.camera.getPicture({
-            quality: 100,
-            destinationType: this.camera.DestinationType.FILE_URI,
-            encodingType: this.camera.EncodingType.JPEG,
-            mediaType: this.camera.MediaType.PICTURE
-          }, '').then((imageData) => {
-      // imageData is either a base64 encoded string or a file URI
-      // If it's base64 (DATA_URL):
-      // let base64Image = 'data:image/jpeg;base64,' + imageData;
-      // this.score = this.scoresProvider.saveImage(base64Image, this.score.id);
-     }, (err) => {
-      // Handle error
-     });
-  }
-  */
-  takePicture() {
-    this.camera.getPicture(this.cameraOptions).then((imageData) => {
-      // this.camera.DestinationType.FILE_URI gives file URI saved in local
-      // this.camera.DestinationType.DATA_URL gives base64 URI
-      let base64Image = 'data:image/jpeg;base64,' + imageData;
-      // this.capturedSnapURL = base64Image;
-      this.score.imgUrl = base64Image;
-      // this.score = this.eventService.saveImage(base64Image, this.score.id);
-    }, (err) => {
-      console.error(err);
-      // Handle error
-    });
+  async takePicture() {
+
+    try {
+      const options: CameraOptions = {
+        quality: 100,
+        destinationType: this.camera.DestinationType.FILE_URI,
+        encodingType: this.camera.EncodingType.JPEG,
+        mediaType: this.camera.MediaType.ALLMEDIA,
+        sourceType : this.camera.PictureSourceType.PHOTOLIBRARY
+      };
+
+      const cameraInfo = await this.camera.getPicture(options);
+      const blobInfo = await this.imageService.makeFileIntoBlob(cameraInfo);
+      const uploadInfo: any = await this.imageService.uploadToFirebase(blobInfo);
+      console.log('File Upload Success ' + uploadInfo.fileName);
+
+      this.score.imgUrl = cameraInfo.filePath;
+      await this.eventService.saveScore(this.score);
+
+    } catch (e) {
+      console.log(e.message);
+      console.log('File Upload Error ' + e.message);
+    }
   }
 
-/*
-  athleteChange(event: {
-    component: IonicSelectableComponent,
-    value: any
-  }) {
-    console.log('athlete:', event.value);
+  async deleteImage() {
+    this.imageService.deleteImage(this.score.imgUrl);
+    this.score.imgUrl = null;
+    await this.eventService.saveScore(this.score);
   }
 
-  judgeChange(event: {
-    component: IonicSelectableComponent,
-    value: any
-  }) {
-    console.log('athlete:', event.value);
-  }
-*/
   compareObj(a1: any, a2: any): boolean {
     return a1 && a2 ? a1.id === a2.id : a1 === a2;
   }
