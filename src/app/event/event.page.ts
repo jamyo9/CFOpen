@@ -9,7 +9,7 @@ import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { Event } from './../../models/event';
 import { switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
-import * as _ from 'lodash'
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-event',
@@ -20,7 +20,7 @@ export class EventPage implements OnInit {
 
   tournament: Tournament;
   events: Event[] = [];
-  
+
   idTournament;
 
   // loggedInUser: User;
@@ -36,7 +36,7 @@ export class EventPage implements OnInit {
       this.activatedroute.queryParams.subscribe(params => {
         if (this.router.getCurrentNavigation().extras.state) {
           this.idTournament = this.router.getCurrentNavigation().extras.state.idTournament;
-          this.tournament =this.tournamentService.getTournamentDetails(this.idTournament);
+          this.tournament = this.tournamentService.getTournamentDetails(this.idTournament);
         }
       });
   }

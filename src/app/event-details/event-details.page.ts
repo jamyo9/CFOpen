@@ -8,7 +8,7 @@ import { EventService } from './../services/event.service';
 
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import * as _ from 'lodash'
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-event-details',
@@ -32,7 +32,7 @@ export class EventDetailsPage implements OnInit {
     private fAuth: AngularFireAuth,
     private authService: AuthService
     ) {
-      
+
       this.activatedroute.queryParams.subscribe(params => {
         if (this.router.getCurrentNavigation().extras.state) {
           this.idEvent = this.router.getCurrentNavigation().extras.state.idEvent;
@@ -89,5 +89,14 @@ export class EventDetailsPage implements OnInit {
       };
     }
     this.router.navigate(['edit-score'], navigationExtras);
+  }
+
+  openEditEventPage(eventId: string) {
+    const navigationExtras: NavigationExtras = {
+      state: {
+        eventId: eventId
+      }
+    };
+    this.router.navigate(['edit-event'], navigationExtras);
   }
 }
