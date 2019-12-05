@@ -21,7 +21,7 @@ export class AppComponent {
     {
       title: 'Tournaments',
       url: '/tournaments',
-      icon: 'home'
+      icon: 'fitness'
     }
   ];
 
