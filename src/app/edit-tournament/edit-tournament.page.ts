@@ -20,15 +20,12 @@ export class EditTournamentPage implements OnInit {
   minDate: string = new Date().toISOString();
   maxDate : any = (new Date()).getFullYear() + 3;
 
-
-
   constructor(
     public navCtrl: NavController,
     public actionSheetController: ActionSheetController,
     private tournamentService: TournamentService,
     private router: Router,
-    private activatedroute: ActivatedRoute,
-    private authService: AuthService
+    private activatedroute: ActivatedRoute
     ) {
 
     this.activatedroute.queryParams.subscribe(params => {

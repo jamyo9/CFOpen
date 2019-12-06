@@ -1,3 +1,4 @@
+import { TournamentService } from './../services/tournament.service';
 import { JudgeService } from './../services/judge.service';
 import { AthleteService } from './../services/athlete.service';
 import { EventService } from './../services/event.service';
@@ -5,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavController, ActionSheetController } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Event } from 'src/models/event';
+import { Tournament } from 'src/models/tournament';
 
 @Component({
   selector: 'app-edit-event',
@@ -19,7 +21,7 @@ export class EditEventPage implements OnInit {
   
   eventId;
   tournamentId;
-  
+
   minDate: string = new Date().toISOString();
   maxDate : any = (new Date()).getFullYear() + 3;
 
@@ -27,6 +29,7 @@ export class EditEventPage implements OnInit {
     public navCtrl: NavController,
     public actionSheetController: ActionSheetController,
     private eventService: EventService,
+    private tournamentService: TournamentService,
     private router: Router,
     private activatedroute: ActivatedRoute
     ) {
@@ -53,6 +56,13 @@ export class EditEventPage implements OnInit {
   }
 
   initPage() {
+    if (this.tournamentId) {
+      // TODO FIXME
+      const tournament: Tournament = this.tournamentService.getTournamentDetails(this.tournamentId);
+      this.minDate = (new Date(tournament.startDate)).toISOString();
+      this.maxDate = new Date(tournament.endDate);
+    }
+
     if (this.eventId != null) {
       // Obtain Score details
       this.event = this.eventService.getEventDetails(this.eventId);

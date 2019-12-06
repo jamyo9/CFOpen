@@ -1,3 +1,4 @@
+import { AuthService } from './../services/auth.service';
 import { ScoreService } from './../services/score.service';
 import { ImageService } from './../services/image.service';
 import { Judge } from './../../models/judge';
@@ -51,10 +52,10 @@ export class EditScorePage implements OnInit {
       if (this.router.getCurrentNavigation().extras.state) {
         this.eventId = this.router.getCurrentNavigation().extras.state.eventId;
 
-        // TODO uncomment when fixing the min & max date
-        // const event = this.eventService.getEventDetails(eventId);
-        // this.minDate = event.startDate;
-        // this.maxDate = event.endDate;
+        // TODO FIXME
+        const event = this.eventService.getEventDetails(this.eventId);
+        this.minDate = (new Date(event.startDate)).toISOString();
+        this.maxDate = event.endDate;
 
         this.idScore = this.router.getCurrentNavigation().extras.state.idScore;
         if (this.idScore != null) {
