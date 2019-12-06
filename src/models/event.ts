@@ -2,15 +2,15 @@ import { Score } from './score';
 
 export class Event {
     id: string;
-    idTournament: string;
+    tournamentId: string;
     code: string;
     name: string;
     startDate: string;
     endDate: string;
     description: string;
 
-    constructor(idTournament: string, code: string, name: string, startDate: string, endDate: string, description: string) {
-        this.idTournament = idTournament;
+    constructor(tournamentId: string, code: string, name: string, startDate: string, endDate: string, description: string) {
+        this.tournamentId = tournamentId;
         this.code = code;
         this.name = name;
         this.startDate = startDate;

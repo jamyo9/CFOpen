@@ -1,3 +1,4 @@
+import { AuthService } from './../services/auth.service';
 import { TournamentService } from './../services/tournament.service';
 import { Tournament } from './../../models/tournament';
 import { Component, OnInit } from '@angular/core';
@@ -22,7 +23,8 @@ export class EditTournamentPage implements OnInit {
     public actionSheetController: ActionSheetController,
     private tournamentService: TournamentService,
     private router: Router,
-    private activatedroute: ActivatedRoute
+    private activatedroute: ActivatedRoute,
+    private authService: AuthService
     ) {
 
     this.activatedroute.queryParams.subscribe(params => {
@@ -69,7 +71,7 @@ export class EditTournamentPage implements OnInit {
       .then(ret => {
         
       });
-    this.navCtrl.pop();
+      this.navCtrl.navigateRoot('tournaments');
   }
 
 }

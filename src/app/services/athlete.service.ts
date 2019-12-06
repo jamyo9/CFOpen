@@ -11,28 +11,26 @@ export class AthleteService {
 
   }
 
-  getAthletesByEvent(idEvent: string): Athlete[] {
+  getAthletesByTournament(tournamentId: string): Athlete[] {
 
     const athletes = [];
 
-    new Promise<any>((resolve, reject) => {
-      this.firestore.collection('/athletes', ref => ref.where('idEvento','==', idEvent)).snapshotChanges()
-        .subscribe(ret => {
-          resolve(ret);
-        });
-    }).then(result => {
-      result.forEach(a => {
-        const ath = new Athlete(
-          a.payload.doc.data().name,
-          a.payload.doc.data().lastName,
-          a.payload.doc.data().dni,
-          a.payload.doc.data().address,
-          a.payload.doc.data().email,
-          a.payload.doc.data().category);
-        ath.id = a.payload.doc.id;
-        athletes.push(ath);
-      });
-    });
+    this.firestore.collection('athletes')
+      .ref.where('tournamentId', '==', tournamentId)
+      .get().then(
+        (result => {
+          result.forEach(a => {
+            const ath = new Athlete(
+              a.data().name,
+              a.data().lastName,
+              a.data().dni,
+              a.data().address,
+              a.data().email,
+              a.data().category);
+            ath.id = a.id;
+            athletes.push(ath);
+          });
+        }));
     return athletes;
   }
 

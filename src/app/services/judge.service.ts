@@ -20,28 +20,26 @@ export class JudgeService {
     });
   }
 
-  getJudgesByEvent(eventId: any): Judge[] {
+  getJudgesByTournament(tournamentId: any) {
 
     const judges = [];
 
-    const promise = new Promise<any>((resolve, reject) => {
-      this.firestore.collection('/judges', ref => ref.where('idEvento','==', eventId )).snapshotChanges()
-        .subscribe(ret => {
-          resolve(ret);
-        });
-    }).then(result => {
-      result.forEach(j => {
-        const jud = new Judge(
-          j.payload.doc.data().name,
-          j.payload.doc.data().lastName,
-          j.payload.doc.data().dni,
-          j.payload.doc.data().address,
-          j.payload.doc.data().email,
-          j.payload.doc.data().certified);
-        jud.id = j.payload.doc.id;
-        judges.push(jud);
-      });
-    });
+    this.firestore.collection('judges')
+      .ref.where('tournamentId', '==', tournamentId)
+      .get().then(
+        (result => {
+          result.forEach(j => {
+            const jud = new Judge(
+              j.data().name,
+              j.data().lastName,
+              j.data().dni,
+              j.data().address,
+              j.data().email,
+              j.data().certified);
+            jud.id = j.id;
+            judges.push(jud);
+          });
+        }));
     return judges;
   }
 }

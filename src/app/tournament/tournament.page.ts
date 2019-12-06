@@ -1,3 +1,4 @@
+import { AuthService } from './../services/auth.service';
 import { TournamentService } from './../services/tournament.service';
 import { Tournament } from './../../models/tournament';
 import { Component, OnInit } from '@angular/core';
@@ -15,14 +16,22 @@ export class TournamentPage implements OnInit {
 
   constructor(
     private tournamentService: TournamentService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
     ) {
 
-    this.tournaments = this.tournamentService.getTournaments();
     this.pageTitle = 'Tournaments';
   }
 
   ngOnInit() {
+  }
+
+  ionViewDidEnter() {
+    this.initPage();
+  }
+
+  initPage() {
+    this.tournaments = this.tournamentService.getTournaments();
   }
   // add back when alpha.4 is out
   // navigate(item) {
@@ -31,9 +40,22 @@ export class TournamentPage implements OnInit {
   openTournament(id: string) {
     const navigationExtras: NavigationExtras = {
       state: {
-        idTournament: id
+        tournamentId: id
       }
     };
     this.router.navigate(['events'], navigationExtras);
+  }
+
+  createTournament() {
+    this.router.navigate(['edit-tournament']);
+  }
+
+  openEditTournamentPage(id: string) {
+    const navigationExtras: NavigationExtras = {
+      state: {
+        tournamentId: id
+      }
+    };
+    this.router.navigate(['edit-tournament'], navigationExtras);
   }
 }

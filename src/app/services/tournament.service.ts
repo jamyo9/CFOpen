@@ -1,5 +1,5 @@
+import { EventService } from './event.service';
 import { Tournament } from './../../models/tournament';
-import { FirebaseService } from './firebase.service';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 
@@ -9,8 +9,8 @@ import { AngularFirestore } from '@angular/fire/firestore';
 export class TournamentService {
 
   constructor(
-    private firebaseService: FirebaseService,
-    private firestore: AngularFirestore) {
+    private firestore: AngularFirestore,
+    private eventService: EventService) {
   }
 
   getTournaments() {
@@ -35,16 +35,16 @@ export class TournamentService {
     return tournaments;
   }
 
-  getTournamentDetails(idTournament: any): Tournament {
+  getTournamentDetails(tournamentId: any): Tournament {
     const tournament = new Tournament('', '', '', '');
     new Promise<any>((resolve, reject) => {
-      this.firestore.collection('/tournaments').doc(idTournament).snapshotChanges()
+      this.firestore.collection('/tournaments').doc(tournamentId).snapshotChanges()
       .subscribe(ret => {
         resolve(ret);
       });
     })
     .then(result => {
-      tournament.id = idTournament;
+      tournament.id = tournamentId;
       tournament.name = result.payload.data().name;
       tournament.startDate = result.payload.data().startDate;
       tournament.endDate = result.payload.data().endDate;
@@ -53,35 +53,26 @@ export class TournamentService {
     return tournament;
   }
 
-  getTournamentName(idTournament: any): string {
-    let tournamentName = '';
-    new Promise<any>((resolve, reject) => {
-      this.firestore.collection('/tournaments').doc(idTournament).snapshotChanges()
-      .subscribe(ret => {
-        resolve(ret);
-      });
-    })
-    .then(result => {
-      tournamentName = result.payload.data().name;
-    });
-
-    return tournamentName;
-  }
-
   saveTournament(tournament: Tournament) {
     return new Promise<any>((resolve, reject) => {
       if (tournament.id != null) {
-        // save score
+        // save tournament
         return this.firestore.doc<Tournament>('/tournaments/' + tournament.id).update(JSON.parse(JSON.stringify(tournament)));
       } else {
-        // add new score
-        return this.firestore.collection<Tournament>('/tournaments').add(JSON.parse(JSON.stringify(tournament)));
-        // TODO there is an id property generated and it is set to ''
+        // add new tournament
+        const id = this.firestore.createId();
+        tournament.id = id;
+        return this.firestore.doc<Tournament>('/tournaments/' + id).set(JSON.parse(JSON.stringify(tournament)));
+
+        // return this.firestore.collection<Tournament>('/tournaments').add(JSON.parse(JSON.stringify(tournament)));
+        // there is an id property generated and it is set to ''
       }
     });
   }
+  
   deleteTournament(tournament: Tournament) {
     // Call API to delete score
+    this.eventService.deleteEventsByTournament(tournament.id);
     return this.firestore.doc<any>('/tournaments/' + tournament.id).delete();
   }
 }

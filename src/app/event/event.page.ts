@@ -16,10 +16,10 @@ import { NavController } from '@ionic/angular';
 })
 export class EventPage implements OnInit {
 
-  tournament: Tournament;
+  tournament: Tournament = new Tournament('', '', '', '');
   events: Event[] = [];
 
-  idTournament;
+  tournamentId: string;
 
   // loggedInUser: User;
   // isAdmin: boolean = false;
@@ -34,8 +34,7 @@ export class EventPage implements OnInit {
     ) {
       this.activatedroute.queryParams.subscribe(params => {
         if (this.router.getCurrentNavigation().extras.state) {
-          this.idTournament = this.router.getCurrentNavigation().extras.state.idTournament;
-          this.tournament = this.tournamentService.getTournamentDetails(this.idTournament);
+          this.tournamentId = this.router.getCurrentNavigation().extras.state.tournamentId;
         }
       });
   }
@@ -48,37 +47,25 @@ export class EventPage implements OnInit {
   }
 
   initPage() {
-    this.events = this.eventService.getEvents(this.idTournament);
+    this.tournament = this.tournamentService.getTournamentDetails(this.tournamentId);
+    this.events = this.eventService.getEvents(this.tournamentId);
   }
 
   openEvent(id: string) {
     const navigationExtras: NavigationExtras = {
       state: {
-        idEvent: id
+        eventId: id
       }
     };
     this.router.navigate(['event-details'], navigationExtras);
   }
 
-  openNewEventPage(id: string) {
-    const navigationExtras: NavigationExtras = {
-      state: {
-        idTournament: id
-      }
-    };
-    this.router.navigate(['edit-event'], navigationExtras);
-  }
-
-  openEditTournamentPage(id: string) {
+  openPage(id: string, page: string) {
     const navigationExtras: NavigationExtras = {
       state: {
         tournamentId: id
       }
     };
-    this.router.navigate(['edit-tournament'], navigationExtras);
-  }
-
-  cancelTournament() {
-    this.navCtrl.pop();
+    this.router.navigate([page], navigationExtras);
   }
 }

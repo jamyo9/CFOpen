@@ -1,11 +1,12 @@
 export class Judge {
-    id: number;
+    id: string;
     name: string;
     lastName: string;
     dni: string;
     address: string;
     email: string;
     certified: boolean;
+    tournamentId: string;
 
     constructor(name: string, lastName: string, dni: string, address: string, email: string, certified: boolean) {
         this.name = name;

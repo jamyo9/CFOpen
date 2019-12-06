@@ -55,20 +55,18 @@ export class AuthService {
       });
   }
 
-  convertUser(user: firebase.auth.UserCredential): any {
-    var customUser = new User('', user.user.email);
-    return customUser;
-  }
-
   async loginUser(email: string, password: string): Promise<User> {
-    return  this.convertUser(await firebase.auth().signInWithEmailAndPassword(email, password));
+    var userCredential:firebase.auth.UserCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
+    var user:User = this.getUser(userCredential.user.uid);
+    this.user = new BehaviorSubject(user);
+    return user;
   }
 
   googleLogin() {
     const provider = new firebase.auth.GoogleAuthProvider()
     return this.fAuth.auth.signInWithPopup(provider)
       .then(credential =>  {
-          this.updateUser(this.convertUser(credential), credential.user.uid);
+          this.updateUser(this.getUser(credential.user.uid), credential.user.uid);
       })
   }
 
@@ -113,5 +111,10 @@ export class AuthService {
 
   isJudge(): boolean {
     return this.user.value.userRoles.judge;
+  }
+
+  convertUser(user: firebase.auth.UserCredential): any {
+    var customUser = new User('', user.user.email);
+    return customUser;
   }
 }

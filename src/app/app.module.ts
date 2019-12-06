@@ -31,7 +31,6 @@ import { IonicSelectableModule } from 'ionic-selectable';
     AngularFirestoreModule,
     AngularFireDatabaseModule,
     AngularFireAuthModule,
-    // AngularFireStorageModule,
     AngularFireModule.initializeApp(environment.firebase),
     IonicSelectableModule
   ],
@@ -41,7 +40,6 @@ import { IonicSelectableModule } from 'ionic-selectable';
     File,
     Camera,
     AuthService,
-    // AngularFireAuth,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

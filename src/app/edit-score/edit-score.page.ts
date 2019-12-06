@@ -1,3 +1,4 @@
+import { ScoreService } from './../services/score.service';
 import { ImageService } from './../services/image.service';
 import { Judge } from './../../models/judge';
 import { Athlete } from './../../models/athlete';
@@ -32,7 +33,7 @@ export class EditScorePage implements OnInit {
   judges: Judge[] = [];
   judge: Judge;
 
-  idEvent;
+  eventId;
   idScore;
 
   constructor(
@@ -42,16 +43,17 @@ export class EditScorePage implements OnInit {
     private eventService: EventService,
     private athleteService: AthleteService,
     private judgeService: JudgeService,
+    private scoreService: ScoreService,
     private router: Router,
     private activatedroute: ActivatedRoute,
     private imageService: ImageService
   ) {
     this.activatedroute.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
-        this.idEvent = this.router.getCurrentNavigation().extras.state.idEvent;
+        this.eventId = this.router.getCurrentNavigation().extras.state.eventId;
 
         // TODO uncomment when fixing the min & max date
-        // const event = this.eventService.getEventDetails(idEvent);
+        // const event = this.eventService.getEventDetails(eventId);
         // this.minDate = event.startDate;
         // this.maxDate = event.endDate;
 
@@ -75,14 +77,14 @@ export class EditScorePage implements OnInit {
   initPage() {
     if (this.idScore != null) {
       // Obtain Score details
-      this.score = this.eventService.getScore(this.idScore);
+      this.score = this.scoreService.getScore(this.idScore);
     } else {
       // set the id of the event to the score
-      this.score.eventId = this.idEvent;
+      this.score.eventId = this.eventId;
     }
 
-    this.athletes = this.athleteService.getAthletesByEvent(this.idEvent);
-    this.judges = this.judgeService.getJudgesByEvent(this.idEvent);
+    this.athletes = this.athleteService.getAthletesByTournament(this.eventId);
+    this.judges = this.judgeService.getJudgesByTournament(this.eventId);
   }
 
   cancelScore() {
@@ -90,7 +92,7 @@ export class EditScorePage implements OnInit {
   }
 
   saveScore() {
-    this.eventService.saveScore(this.score)
+    this.scoreService.saveScore(this.score)
       .then(ret => {
 
       });
@@ -99,7 +101,7 @@ export class EditScorePage implements OnInit {
   }
 
   async deleteScore() {
-    await this.eventService.deleteScore(this.score)
+    await this.scoreService.deleteScore(this.score)
     .then(ret => {
 
     });
@@ -150,7 +152,7 @@ export class EditScorePage implements OnInit {
       console.log('File Upload Success ' + uploadInfo.fileName);
 
       this.score.imgUrl = cameraInfo.filePath;
-      await this.eventService.saveScore(this.score);
+      await this.scoreService.saveScore(this.score);
 
     } catch (e) {
       console.log(e.message);
@@ -161,7 +163,7 @@ export class EditScorePage implements OnInit {
   async deleteImage() {
     this.imageService.deleteImage(this.score.imgUrl);
     this.score.imgUrl = null;
-    await this.eventService.saveScore(this.score);
+    await this.scoreService.saveScore(this.score);
   }
 
   compareObj(a1: any, a2: any): boolean {

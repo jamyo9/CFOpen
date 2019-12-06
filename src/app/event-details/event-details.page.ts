@@ -1,3 +1,4 @@
+import { ScoreService } from './../services/score.service';
 import { Score } from './../../models/score';
 import { Event } from './../../models/event';
 
@@ -20,7 +21,7 @@ export class EventDetailsPage implements OnInit {
   event: Event = new Event('', '', '', '', '', '');
   classification: Score[] = [];
   categoryTitle = 'Men Rx';
-  idEvent;
+  eventId;
 
   // loggedInUser: User;
   // isJudge: boolean = false;
@@ -28,6 +29,7 @@ export class EventDetailsPage implements OnInit {
   constructor(
     public navCtrl: NavController,
     private eventService: EventService,
+    private scoreService: ScoreService,
     private router: Router,
     private activatedroute: ActivatedRoute,
     private fAuth: AngularFireAuth,
@@ -36,7 +38,7 @@ export class EventDetailsPage implements OnInit {
 
       this.activatedroute.queryParams.subscribe(params => {
         if (this.router.getCurrentNavigation().extras.state) {
-          this.idEvent = this.router.getCurrentNavigation().extras.state.idEvent;
+          this.eventId = this.router.getCurrentNavigation().extras.state.eventId;
         }
       });
   }
@@ -50,15 +52,17 @@ export class EventDetailsPage implements OnInit {
 
   initPage() {
     // get the details of the event
-    this.event = this.eventService.getEventDetails(this.idEvent);
+    this.event = this.eventService.getEventDetails(this.eventId);
 
     // obtain the menRx classification
-    this.classification = this.eventService.getClassificationEvent('menRx', this.idEvent);
+    this.classification = this.scoreService.getClassificationEvent('menRx', this.eventId);
+
+    console.log(this.authService.user.value);
   }
 
   onChangeClassification($event) {
     const category = $event.detail.value;
-    this.classification = this.eventService.getClassificationEvent(category, this.event.id);
+    this.classification = this.scoreService.getClassificationEvent(category, this.event.id);
 
     if (category === 'menRx') {
       this.categoryTitle = 'Men Rx';
@@ -78,14 +82,14 @@ export class EventDetailsPage implements OnInit {
     if (scoreId != null) {
       navigationExtras = {
         state: {
-          idEvent: eventId,
+          eventId: eventId,
           idScore: scoreId
         }
       };
     } else {
       navigationExtras = {
         state: {
-          idEvent: eventId
+          eventId: eventId
         }
       };
     }

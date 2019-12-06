@@ -18,7 +18,7 @@ export class EditEventPage implements OnInit {
   event = new Event('', '', '', '', '', '');
   
   eventId;
-  idTournament;
+  tournamentId;
 
   constructor(
     public navCtrl: NavController,
@@ -30,7 +30,7 @@ export class EditEventPage implements OnInit {
 
     this.activatedroute.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
-        this.idTournament = this.router.getCurrentNavigation().extras.state.idTournament;
+        this.tournamentId = this.router.getCurrentNavigation().extras.state.tournamentId;
         
         this.eventId = this.router.getCurrentNavigation().extras.state.eventId;
         if (this.eventId != null) {
@@ -55,7 +55,7 @@ export class EditEventPage implements OnInit {
       this.event = this.eventService.getEventDetails(this.eventId);
     } else {
       // set the id of the event to the score
-      this.event.idTournament = this.idTournament;
+      this.event.tournamentId = this.tournamentId;
     }
   }
 

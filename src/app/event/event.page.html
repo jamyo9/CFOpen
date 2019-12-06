@@ -24,13 +24,15 @@
   </ion-fab>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-      <ion-fab-button>
-        <ion-icon name="arrow-dropup"></ion-icon>
-      </ion-fab-button>
-      <ion-fab-list side="top">
-        <ion-fab-button (click)="cancelTournament()"><ion-icon name="close"></ion-icon></ion-fab-button>
-        <ion-fab-button (click)="openNewEventPage(tournament.id)" *ngIf="authService.isAdmin"><ion-icon name="add"></ion-icon></ion-fab-button>
-        <ion-fab-button (click)="openEditTournamentPage(tournament.id)" *ngIf='authService.isAdmin'><ion-icon name="create"></ion-icon></ion-fab-button>
-      </ion-fab-list>
-    </ion-fab>
+    <ion-fab-button>
+      <ion-icon name="arrow-dropup"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button (click)="cancelTournament()"><ion-icon name="close"></ion-icon></ion-fab-button>
+      <ion-fab-button (click)="openPage(tournament.id, 'edit-event')" *ngIf="authService.isAdmin"><ion-icon name="add"></ion-icon></ion-fab-button>
+      <ion-fab-button (click)="openPage(tournament.id, 'add-athletes')" *ngIf="authService.isAdmin"><ion-icon name="contact"></ion-icon></ion-fab-button>
+      <ion-fab-button (click)="openPage(tournament.id, 'add-judges')" *ngIf="authService.isAdmin"><ion-icon name="contacts"></ion-icon></ion-fab-button>
+      <ion-fab-button (click)="openPage(tournament.id, 'edit-tournament')" *ngIf='authService.isAdmin'><ion-icon name="create"></ion-icon></ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
 </ion-content>
