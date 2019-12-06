@@ -31,12 +31,12 @@
 
     <ion-item>
       <!--<ion-label>Start Date</ion-label>-->
-      <ion-datetime [(ngModel)]="event.startDate" displayFormat="DD/MMM/YYYY" pickerFormat="DD/MMM/YYYY" placeholder="Start Date"></ion-datetime>
+      <ion-datetime [(ngModel)]="event.startDate" displayFormat="DD/MMM/YYYY" pickerFormat="DD/MMM/YYYY" placeholder="Start Date" [min]="minDate" [max]="maxDate"></ion-datetime>
     </ion-item>
 
     <ion-item>
       <!--<ion-label>End Date</ion-label>-->
-      <ion-datetime [(ngModel)]="event.endDate" displayFormat="DD/MMM/YYYY" pickerFormat="DD/MMM/YYYY" placeholder="End Date"></ion-datetime>
+      <ion-datetime [(ngModel)]="event.endDate" displayFormat="DD/MMM/YYYY" pickerFormat="DD/MMM/YYYY" placeholder="End Date" [min]="minDate" [max]="maxDate"></ion-datetime>
     </ion-item>
 
     <ion-item>

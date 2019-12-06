@@ -24,9 +24,8 @@ export class EditScorePage implements OnInit {
   pageTitle: string;
   score = new Score('', null, null, '', '', '', false, '', '', 0);
 
-  // TODO give initial value
-  minDate: string;
-  maxDate: string;
+  minDate: string = new Date().toISOString();
+  maxDate : any = (new Date()).getFullYear() + 3;
 
   athletes: Athlete[] = [];
   athlete: Athlete;

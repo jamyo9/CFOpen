@@ -17,6 +17,10 @@ export class EditTournamentPage implements OnInit {
   tournament = new Tournament('', '', '', '');
   
   tournamentId;
+  minDate: string = new Date().toISOString();
+  maxDate : any = (new Date()).getFullYear() + 3;
+
+
 
   constructor(
     public navCtrl: NavController,
