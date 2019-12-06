@@ -54,7 +54,9 @@ const routes: Routes = [
     path: 'edit-tournament',
     canActivate: [AuthGuard, AdminGuard],
     loadChildren: () => import ('./edit-tournament/edit-tournament.module').then(m => m.EditTournamentPageModule)
-  }
+  },
+  { path: 'add-athletes', loadChildren: './add-athletes/add-athletes.module#AddAthletesPageModule' },
+  { path: 'add-judges', loadChildren: './add-judges/add-judges.module#AddJudgesPageModule' }
 ];
 
 @NgModule({
