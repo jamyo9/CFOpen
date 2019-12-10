@@ -38,7 +38,11 @@ export class LoginPage implements OnInit {
     }
   }
 
-  goToRegister() {
+  goToRegisterUser() {
     this.router.navigate(['register'], {replaceUrl: true})
+  }
+
+  goToRegisterBox() {
+    this.router.navigate(['register-box'], {replaceUrl: true})
   }
 }

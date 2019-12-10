@@ -1,0 +1,49 @@
+<ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>{{ pageTitle }}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+<ion-content>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="arrow-dropup"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button (click)="cancelJudge()"><ion-icon name="close"></ion-icon></ion-fab-button>
+      <ion-fab-button (click)="deleteJudge()"><ion-icon name="trash"></ion-icon></ion-fab-button>
+      <ion-fab-button (click)="saveJudge()"><ion-icon name="checkmark"></ion-icon></ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+
+  <ion-item>
+    <ion-input [(ngModel)]="judge.name" placeholder="Name"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-input [(ngModel)]="judge.lastName" placeholder="Last Name"></ion-input>
+  </ion-item>
+
+  <ion-item>
+      <ion-input [(ngModel)]="judge.dni" placeholder="DNI"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-input [(ngModel)]="judge.address" placeholder="Address"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-input [(ngModel)]="judge.email" placeholder="E-Mail"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <label>Certified</label>
+    <ion-select [(ngModel)]="judge.certified">
+      <ion-select-option value="true">True</ion-select-option>
+      <ion-select-option value="false">False</ion-select-option>
+    </ion-select>
+  </ion-item>
+</ion-content>

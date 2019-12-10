@@ -16,7 +16,7 @@ import { NavController } from '@ionic/angular';
 })
 export class EventPage implements OnInit {
 
-  tournament: Tournament = new Tournament('', '', '', '');
+  tournament: Tournament = new Tournament('', '', '', '', '');
   events: Event[] = [];
 
   tournamentId: string;
@@ -54,7 +54,8 @@ export class EventPage implements OnInit {
   openEvent(id: string) {
     const navigationExtras: NavigationExtras = {
       state: {
-        eventId: id
+        eventId: id,
+        tournamentId: this.tournamentId
       }
     };
     this.router.navigate(['event-details'], navigationExtras);
@@ -67,5 +68,9 @@ export class EventPage implements OnInit {
       }
     };
     this.router.navigate([page], navigationExtras);
+  }
+
+  cancelTournament() {
+    this.navCtrl.pop();
   }
 }

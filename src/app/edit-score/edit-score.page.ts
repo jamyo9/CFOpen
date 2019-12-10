@@ -35,6 +35,7 @@ export class EditScorePage implements OnInit {
 
   eventId;
   idScore;
+  tournamentId;
 
   constructor(
     public navCtrl: NavController,
@@ -53,9 +54,9 @@ export class EditScorePage implements OnInit {
         this.eventId = this.router.getCurrentNavigation().extras.state.eventId;
 
         // TODO FIXME
-        const event = this.eventService.getEventDetails(this.eventId);
-        this.minDate = (new Date(event.startDate)).toISOString();
-        this.maxDate = event.endDate;
+        // const event = this.eventService.getEventDetails(this.eventId);
+        // this.minDate = (new Date(event.startDate)).toISOString();
+        // this.maxDate = event.endDate;
 
         this.idScore = this.router.getCurrentNavigation().extras.state.idScore;
         if (this.idScore != null) {
@@ -63,6 +64,8 @@ export class EditScorePage implements OnInit {
         } else {
           this.pageTitle = 'New Score';
         }
+
+        this.tournamentId = this.router.getCurrentNavigation().extras.state.tournamentId;
       }
     });
   }
@@ -83,8 +86,8 @@ export class EditScorePage implements OnInit {
       this.score.eventId = this.eventId;
     }
 
-    this.athletes = this.athleteService.getAthletesByTournament(this.eventId);
-    this.judges = this.judgeService.getJudgesByTournament(this.eventId);
+    this.athletes = this.athleteService.getAthletesByTournament(this.tournamentId);
+    this.judges = this.judgeService.getJudgesByTournament(this.tournamentId);
   }
 
   cancelScore() {

@@ -16,6 +16,10 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
+    path: 'register-box',
+    loadChildren: () => import ('./register-box/register-box.module').then(m => m.RegisterBoxPageModule)
+  },
+  {
     path: 'login',
     loadChildren: () => import ('./login/login.module').then(m => m.LoginPageModule),
     pathMatch: 'full'
@@ -55,8 +59,27 @@ const routes: Routes = [
     canActivate: [AuthGuard, AdminGuard],
     loadChildren: () => import ('./edit-tournament/edit-tournament.module').then(m => m.EditTournamentPageModule)
   },
-  { path: 'add-athletes', loadChildren: './add-athletes/add-athletes.module#AddAthletesPageModule' },
-  { path: 'add-judges', loadChildren: './add-judges/add-judges.module#AddJudgesPageModule' }
+  {
+    path: 'add-athletes',
+    canActivate: [AuthGuard, AdminGuard],
+    loadChildren: () => import ('./add-athletes/add-athletes.module').then(m => m.AddAthletesPageModule)
+  },
+  { 
+    path: 'edit-athlete',
+    canActivate: [AuthGuard, AdminGuard],
+    loadChildren: () => import ('./edit-athlete/edit-athlete.module').then(m => m.EditAthletePageModule)
+  },
+  {
+    path: 'edit-judge',
+    canActivate: [AuthGuard, AdminGuard],
+    loadChildren: () => import ('./edit-judge/edit-judge.module').then(m => m.EditJudgePageModule)
+  },
+  { 
+    path: 'admin-users',
+    canActivate: [AuthGuard, AdminGuard],
+    loadChildren: () => import ('./admin-users/admin-users.module').then(m => m.AdminUsersPageModule)
+  },
+  { path: 'edit-user', loadChildren: './edit-user/edit-user.module#EditUserPageModule' }
 ];
 
 @NgModule({

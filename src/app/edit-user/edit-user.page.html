@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+    <ion-title>{{ pageTitle }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label>Email</ion-label>
+    <ion-input type="text" [(ngModel)]="user.email" disabled="true"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Name</ion-label>
+    <ion-input type="text" [(ngModel)]="user.name"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Last Name</ion-label>
+    <ion-input type="text" [(ngModel)]="user.lastName"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>DNI</ion-label>
+    <ion-input type="text" [(ngModel)]="user.dni"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Address</ion-label>
+    <ion-input type="text" [(ngModel)]="user.address"></ion-input>
+  </ion-item>
+
+  <ion-list>
+      <ion-label>Roles</ion-label>
+      <ion-item>
+        <ion-label>Admin</ion-label>
+        <ion-toggle [(ngModel)]="user.userRoles.admin"></ion-toggle>
+      </ion-item>
+    
+      <ion-item>
+        <ion-label>Judge</ion-label>
+        <ion-toggle [(ngModel)]="user.userRoles.judge"></ion-toggle>
+      </ion-item>
+    </ion-list>
+
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="arrow-dropup"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button (click)="cancel()"><ion-icon name="close"></ion-icon></ion-fab-button>
+      <ion-fab-button (click)="delete()"><ion-icon name="trash"></ion-icon></ion-fab-button>
+      <ion-fab-button (click)="save()"><ion-icon name="checkmark"></ion-icon></ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+</ion-content>

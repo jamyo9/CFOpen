@@ -1,7 +1,9 @@
+import { JudgeService } from './judge.service';
 import { EventService } from './event.service';
 import { Tournament } from './../../models/tournament';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { AthleteService } from './athlete.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +12,9 @@ export class TournamentService {
 
   constructor(
     private firestore: AngularFirestore,
-    private eventService: EventService) {
+    private eventService: EventService,
+    private athleteService: AthleteService,
+    private judgeService: JudgeService) {
   }
 
   getTournaments() {
@@ -26,7 +30,8 @@ export class TournamentService {
           t.payload.doc.data().name,
           t.payload.doc.data().startDate,
           t.payload.doc.data().endDate,
-          t.payload.doc.data().page
+          t.payload.doc.data().page,
+          ''
         );
         tournament.id = t.payload.doc.id;
         tournaments.push(tournament);
@@ -36,7 +41,7 @@ export class TournamentService {
   }
 
   getTournamentDetails(tournamentId: any): Tournament {
-    const tournament = new Tournament('', '', '', '');
+    const tournament = new Tournament('', '', '', '', '');
     new Promise<any>((resolve, reject) => {
       this.firestore.collection('/tournaments').doc(tournamentId).snapshotChanges()
       .subscribe(ret => {
@@ -72,6 +77,8 @@ export class TournamentService {
   
   deleteTournament(tournament: Tournament) {
     // Call API to delete score
+    this.athleteService.deleteAthletesByTournament(tournament.id);
+    this.judgeService.deleteJudgesByTournament(tournament.id);
     this.eventService.deleteEventsByTournament(tournament.id);
     return this.firestore.doc<any>('/tournaments/' + tournament.id).delete();
   }

@@ -6,13 +6,35 @@
 
 <ion-content>
   <ion-item>
-    <ion-label>Email</ion-label>
-    <ion-input type="text" [(ngModel)]="email"></ion-input>
+    <ion-input type="text" [(ngModel)]="user.email" placeholder="E-Mail"></ion-input>
   </ion-item>
 
   <ion-item>
-    <ion-label>Password</ion-label>
-    <ion-input type="password" [(ngModel)]="password"></ion-input>
+    <ion-input type="password" [(ngModel)]="password" placeholder="Password"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-input type="text" [(ngModel)]="user.name" placeholder="Name"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-input type="text" [(ngModel)]="user.lastName" placeholder="Last Name"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-input type="text" [(ngModel)]="user.dni" placeholder="DNI"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-input type="text" [(ngModel)]="user.address" placeholder="Address"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-input type="text" [(ngModel)]="box.name" placeholder="Box Name"></ion-input>
+  </ion-item>
+
+  <ion-item>
+¡    <ion-input type="text" [(ngModel)]="box.registerCode" placeholder="Box Register Code"></ion-input>
   </ion-item>
 
   <ion-button (click)="register()">Register</ion-button>

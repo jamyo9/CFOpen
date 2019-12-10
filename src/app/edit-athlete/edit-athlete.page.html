@@ -1,0 +1,52 @@
+<ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>{{ pageTitle }}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+<ion-content>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="arrow-dropup"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button (click)="cancelAthlete()"><ion-icon name="close"></ion-icon></ion-fab-button>
+      <ion-fab-button (click)="deleteAthlete()"><ion-icon name="trash"></ion-icon></ion-fab-button>
+      <ion-fab-button (click)="saveAthlete()"><ion-icon name="checkmark"></ion-icon></ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+
+  <ion-item>
+    <ion-input [(ngModel)]="athlete.name" placeholder="Name"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-input [(ngModel)]="athlete.lastName" placeholder="Last Name"></ion-input>
+  </ion-item>
+
+  <ion-item>
+      <ion-input [(ngModel)]="athlete.dni" placeholder="DNI"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-input [(ngModel)]="athlete.address" placeholder="Address"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-input [(ngModel)]="athlete.email" placeholder="E-Mail"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <label>Category</label>
+    <ion-select [(ngModel)]="athlete.category">
+      <ion-select-option value="menRx" selected>RxMen</ion-select-option>
+      <ion-select-option value="womenRx">RxWomen</ion-select-option>
+      <ion-select-option value="menSc">ScMen</ion-select-option>
+      <ion-select-option value="womenSc">ScWomen</ion-select-option>
+      <ion-select-option value="55">50+</ion-select-option>
+    </ion-select>
+  </ion-item>
+</ion-content>

@@ -14,7 +14,7 @@ export class EditTournamentPage implements OnInit {
 
   pageTitle: string;
 
-  tournament = new Tournament('', '', '', '');
+  tournament = new Tournament('', '', '', '', '');
   
   tournamentId;
   minDate: string = new Date().toISOString();

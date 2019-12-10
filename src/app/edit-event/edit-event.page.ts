@@ -58,9 +58,9 @@ export class EditEventPage implements OnInit {
   initPage() {
     if (this.tournamentId) {
       // TODO FIXME
-      const tournament: Tournament = this.tournamentService.getTournamentDetails(this.tournamentId);
-      this.minDate = (new Date(tournament.startDate)).toISOString();
-      this.maxDate = new Date(tournament.endDate);
+      //const tournament: Tournament = this.tournamentService.getTournamentDetails(this.tournamentId);
+      //this.minDate = (new Date(tournament.startDate)).toISOString();
+      //this.maxDate = new Date(tournament.endDate);
     }
 
     if (this.eventId != null) {

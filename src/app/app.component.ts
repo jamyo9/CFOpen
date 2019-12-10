@@ -1,3 +1,4 @@
+import { NavigationExtras } from '@angular/router';
 import { AuthService } from './services/auth.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Component } from '@angular/core';
@@ -52,8 +53,6 @@ export class AppComponent {
       this.splashScreen.hide();
     });
 
-    console.log(this.authService.user);
-
     if (this.authService.user) {
         this.navController.navigateRoot('home');
         this.splashScreen.hide();
@@ -61,6 +60,16 @@ export class AppComponent {
         this.navController.navigateRoot('login');
         this.splashScreen.hide();
     }
+  }
+
+  adminUsers() {
+    const navigationExtras: NavigationExtras = {
+      state: {
+        boxId: this.authService.user.value.boxId
+      }
+    };
+    this.navController.navigateRoot('admin-users', navigationExtras);
+    this.splashScreen.hide();
   }
 
   logout() {

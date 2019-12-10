@@ -7,7 +7,8 @@ export class Judge {
     email: string;
     certified: boolean;
     tournamentId: string;
-
+    userId: string
+    
     constructor(name: string, lastName: string, dni: string, address: string, email: string, certified: boolean) {
         this.name = name;
         this.lastName = lastName;

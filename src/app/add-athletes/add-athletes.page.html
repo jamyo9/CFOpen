@@ -1,9 +1,36 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>add-athletes</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>{{ pageTitle }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <label>Users</label>
+  <ion-card *ngFor="let u of users">
+    <ion-item>
+      <h2>{{u.name}} {{u.lastName}}</h2>
+      <ion-icon slot="end" name="medal" (click)="selectAthlete(u.id)"></ion-icon>
+      <ion-icon slot="end" name="contacts" (click)="selectJudge(u.id)"></ion-icon>
+    </ion-item>
+  </ion-card>
 
+  <label>Athletes</label>
+  <ion-card *ngFor="let a of athletes">
+    <ion-item>
+      <h2>{{a.name}} {{a.lastName}}</h2>
+      <ion-icon slot="end" name="close-circle" (click)="selectAthlete(null, a.id)"></ion-icon>
+    </ion-item>
+  </ion-card>
+
+  <label>Judges</label>
+  <ion-card *ngFor="let j of judges">
+    <ion-item>
+      <h2>{{j.name}} {{j.lastName}}</h2>
+      <ion-icon slot="end" name="close-circle" (click)="selectJudge(null, j.id)"></ion-icon>
+    </ion-item>
+  </ion-card>
 </ion-content>
+  

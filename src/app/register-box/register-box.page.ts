@@ -1,20 +1,17 @@
-import { Box } from 'src/models/box';
 import { AuthService } from './../services/auth.service';
 import { Router } from '@angular/router';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { User } from 'src/models/user';
+import { Box } from 'src/models/box';
 
 @Component({
-  selector: 'page-register',
-  templateUrl: 'register.page.html',
-  styleUrls: ['./register.page.scss'],
+  selector: 'app-register-box',
+  templateUrl: './register-box.page.html',
+  styleUrls: ['./register-box.page.scss'],
 })
-export class RegisterPage {
-
-  user: User = new User('', '');
+export class RegisterBoxPage implements OnInit {
+  
   box: Box = new Box('', '', '');
-  password: string = '';
   pageTitle = '';
 
   constructor(
@@ -25,9 +22,12 @@ export class RegisterPage {
       this.pageTitle = 'Register';
   }
 
+  ngOnInit(): void {
+  }
+
   async register() {
-    var registeredUser = this.authService.registerUser(this.user, this.password, this.box);
-    if ( registeredUser != null ) {
+    var registeredBox = this.authService.registerBox(this.box);
+    if ( registeredBox != null ) {
       this.router.navigate(['login']);
     }
   }

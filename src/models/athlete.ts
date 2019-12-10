@@ -7,6 +7,7 @@ export class Athlete {
     email: string;
     category: string;
     tournamentId: string;
+    userId: string
 
     constructor(name: string, lastName: string, dni: string, address: string, email: string, category: string) {
         this.name = name;

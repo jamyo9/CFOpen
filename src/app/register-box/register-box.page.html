@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ pageTitle }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+  
+<ion-content>
+  <ion-item>
+    <ion-input type="text" [(ngModel)]="box.name" placeholder="Name"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-input type="text" [(ngModel)]="box.email" placeholder="Email"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-input type="text" [(ngModel)]="box.registerCode" placeholder="Register Code"></ion-input>
+  </ion-item>
+
+  <ion-button (click)="register()">Register</ion-button>
+</ion-content>

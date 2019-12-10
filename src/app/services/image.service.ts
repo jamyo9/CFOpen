@@ -11,7 +11,9 @@ export class ImageService {
   constructor(
     private file: File
   ) {
-    firebase.initializeApp({});
+    if (!firebase.apps.length) {
+      firebase.initializeApp({});
+    }
   }
 
   // FILE STUFF

@@ -21,6 +21,10 @@
 
         <ion-list>
           <ion-menu-toggle auto-hide="false">
+              <ion-item>
+                <ion-icon name="contacts"></ion-icon>
+                <button ion-button  (click)="adminUsers()">Admin Users</button>
+              </ion-item>
             <ion-item>
               <ion-icon name="log-out"></ion-icon>
               <button ion-button  (click)="logout()">Logout</button>

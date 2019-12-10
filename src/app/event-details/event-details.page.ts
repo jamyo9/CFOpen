@@ -22,6 +22,7 @@ export class EventDetailsPage implements OnInit {
   classification: Score[] = [];
   categoryTitle = 'Men Rx';
   eventId;
+  tournamentId;
 
   // loggedInUser: User;
   // isJudge: boolean = false;
@@ -39,6 +40,7 @@ export class EventDetailsPage implements OnInit {
       this.activatedroute.queryParams.subscribe(params => {
         if (this.router.getCurrentNavigation().extras.state) {
           this.eventId = this.router.getCurrentNavigation().extras.state.eventId;
+          this.tournamentId = this.router.getCurrentNavigation().extras.state.tournamentId;
         }
       });
   }
@@ -56,8 +58,6 @@ export class EventDetailsPage implements OnInit {
 
     // obtain the menRx classification
     this.classification = this.scoreService.getClassificationEvent('menRx', this.eventId);
-
-    console.log(this.authService.user.value);
   }
 
   onChangeClassification($event) {
@@ -83,13 +83,15 @@ export class EventDetailsPage implements OnInit {
       navigationExtras = {
         state: {
           eventId: eventId,
-          idScore: scoreId
+          idScore: scoreId,
+          tournamentId: this.tournamentId
         }
       };
     } else {
       navigationExtras = {
         state: {
-          eventId: eventId
+          eventId: eventId,
+          tournamentId: this.tournamentId
         }
       };
     }

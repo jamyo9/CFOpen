@@ -1,3 +1,4 @@
+import { Box } from './../../models/box';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Injectable } from '@angular/core';
@@ -15,7 +16,6 @@ import { AngularFirestore } from '@angular/fire/firestore';
   providedIn: 'root'
 })
 export class AuthService {
-
   // starting app default as unauthorised
   // user: User = new User('','');
   // userID = this.fAuth.auth.currentUser.uid;
@@ -29,11 +29,9 @@ export class AuthService {
       this.fAuth.authState.pipe(switchMap(auth => {
         if (auth) {
           // signed in
-          // return this.db.object('users/' + auth.uid)
           return this.db.object<User>('/users/' + auth.uid).valueChanges();
         } else {
           /// not signed in
-          // return Observable.create(null);
           return of(null)
         }
       })).subscribe(user => {
@@ -41,18 +39,24 @@ export class AuthService {
       });
   }
 
-  async registerUser(email: string, password: string) {
-    this.fAuth.auth
-      .createUserWithEmailAndPassword(email, password)
-      .then(async user => {
-        var customUser = this.convertUser(user);
-        await firebase.firestore().doc('/users/' + user.user.uid).set(JSON.parse(JSON.stringify(customUser)));
-        return customUser;
-      })
-      .catch(err => {
-        console.log('Something went wrong:',err.message);
-        return null;
-      });
+  async registerUser(user: User, password: string, box: Box) {
+    const boxId: string = this.getBoxIdByNameAndCode(box);
+    if (boxId){
+      this.fAuth.auth
+        .createUserWithEmailAndPassword(user.email, password)
+        .then(async userTmp => {
+          user.id = userTmp.user.uid;
+          user.boxId = boxId;
+          await firebase.firestore().doc('/users/' + userTmp.user.uid).set(JSON.parse(JSON.stringify(user)));
+          return user;
+        })
+        .catch(err => {
+          console.log('Something went wrong:',err.message);
+          return null;
+        });
+    } else {
+      return null;
+    }
   }
 
   async loginUser(email: string, password: string): Promise<User> {
@@ -73,6 +77,22 @@ export class AuthService {
   logout() {
     return firebase.auth().signOut().then(result => {
       this.user = new BehaviorSubject(null);
+    });
+  }
+  
+  saveUser(user: User) {
+    return new Promise<any>((resolve, reject) => {
+      if (user.id != null) {
+        // save user
+        this.firestore.doc<User>('/users/' + user.id).update(JSON.parse(JSON.stringify(user)));
+        return user.id;
+      } else {
+        // add new user
+        const id = this.firestore.createId();
+        user.id = id;
+        this.firestore.doc<User>('/users/' + id).set(JSON.parse(JSON.stringify(user)));
+        return id;
+      }
     });
   }
 
@@ -101,20 +121,40 @@ export class AuthService {
       user.userRoles = result.payload.data().userRoles;
       user.email =  result.payload.data().email;
       user.name = result.payload.data().name;
+      user.boxId = result.payload.data().boxId;
     });
     return user;
   }
 
+  getBoxId(): string {
+    return this.user.getValue().boxId;
+  }
+
   isAdmin(): boolean {
-    return this.user.value.userRoles.admin;
+    return this.user.getValue().userRoles.admin;
   }
 
   isJudge(): boolean {
-    return this.user.value.userRoles.judge;
+    return this.user.getValue().userRoles.judge;
   }
 
-  convertUser(user: firebase.auth.UserCredential): any {
-    var customUser = new User('', user.user.email);
-    return customUser;
+  registerBox(box: Box) {
+    // add new score
+    const id = this.firestore.createId();
+    box.id = id;
+    return this.firestore.doc<Box>('/boxes/' + id).set(JSON.parse(JSON.stringify(box)));
+  }
+
+  getBoxIdByNameAndCode(box: Box): string {
+    let boxId: string = '';
+    this.firestore.collection('scores')
+      .ref.where('name', '==', box.name).where('registerCode', '==', box.registerCode)
+      .get().then(
+        (result => {
+          result.forEach(b => {
+            box.id = b.id;
+          });
+      }));
+    return box.id;
   }
 }
